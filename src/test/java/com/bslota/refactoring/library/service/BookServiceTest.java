@@ -2,10 +2,15 @@ package com.bslota.refactoring.library.service;
 
 import com.bslota.refactoring.library.dao.BookDAO;
 import com.bslota.refactoring.library.dao.PatronDAO;
+import com.bslota.refactoring.library.fixture.BookFixture;
+import com.bslota.refactoring.library.fixture.PatronFixture;
+import com.bslota.refactoring.library.model.Book;
+import com.bslota.refactoring.library.model.Patron;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * @author bslota on 04/06/2020
@@ -32,7 +37,15 @@ class BookServiceTest {
 
     @Test
     void shouldFailToPlaceBookOnHoldWhenPatronHasMaxNumberOfHolds() {
+        //given
+        Book book = availableBook();
+        Patron patron = patronWithMaxNumberOfHolds();
 
+        //when
+        boolean result = bookService.placeOnHold(book.getBookId(), patron.getPatronId(), PERIOD_IN_DAYS);
+
+        //then
+        assertFalse(result);
     }
 
     @Test
@@ -44,4 +57,17 @@ class BookServiceTest {
     void shouldSucceedToPlaceBookOnHold() {
 
     }
+
+    private Book availableBook() {
+        Book book = BookFixture.availableBook();
+        when(bookDAO.getBookFromDatabase(book.getBookId())).thenReturn(book);
+        return book;
+    }
+
+    private Patron patronWithMaxNumberOfHolds() {
+        Patron patron = PatronFixture.patronWithMaxNumberOfHolds();
+        when(patronDAO.getPatronFromDatabase(patron.getPatronId())).thenReturn(patron);
+        return patron;
+    }
+
 }
