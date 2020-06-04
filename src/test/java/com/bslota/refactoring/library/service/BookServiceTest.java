@@ -10,7 +10,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
@@ -73,6 +76,17 @@ class BookServiceTest {
 
         //then
         assertTrue(result);
+    }
+
+    @Test
+    void shouldNotSaveBookPatronOrSendNotificationWhenFailedToPlaceNotExistingBookOnHold() {
+        //when
+        bookService.placeOnHold(ID_OF_NOT_EXISTING_BOOK, ID_OF_NOT_EXISTING_PATRON, PERIOD_IN_DAYS);
+
+        //then
+        verify(bookDAO, never()).update(any());
+        verify(patronDAO, never()).update(any());
+        verify(notificationSender, never()).sendMail(any(), any(), any(), any());
     }
 
     private Book availableBook() {
