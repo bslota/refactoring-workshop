@@ -10,17 +10,17 @@ import static java.time.temporal.ChronoUnit.DAYS;
 /**
  * @author bslota on 15/11/2019
  */
-class BookFixture {
+public class BookFixture {
 
     private static final int EXISTING_BOOK_ID = 2;
     private static final int SOME_RESERVATION_PERIOD = 50;
     private static final String DEFAULT_BOOK_TYPE = "CIRCULATING";
 
-    static Book availableBook() {
+    public static Book availableBook() {
         return newBook().build();
     }
 
-    static Book unavailableBook() {
+    public static Book unavailableBook() {
         Instant reservationDate = Instant.now();
         return newBook()
                 .withReservationDate(reservationDate)
@@ -28,7 +28,7 @@ class BookFixture {
                 .build();
     }
 
-    static class BookBuilder {
+    public static class BookBuilder {
         private int bookId = EXISTING_BOOK_ID;
         private String type = DEFAULT_BOOK_TYPE;
         private Instant reservationDate;

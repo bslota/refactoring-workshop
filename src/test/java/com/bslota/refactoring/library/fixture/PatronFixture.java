@@ -12,27 +12,27 @@ import static java.util.stream.Collectors.toList;
 /**
  * @author bslota on 15/11/2019
  */
-class PatronFixture {
+public class PatronFixture {
 
     private static final int SOME_PATRON_ID = 10;
 
-    static Patron patronWithoutHolds() {
+    public static Patron patronWithoutHolds() {
         return newPatron().build();
     }
 
-    static Patron patronWithMaxNumberOfHolds() {
+    public static Patron patronWithMaxNumberOfHolds() {
         return newPatron()
                 .withHolds(IntStream.range(0, 5).boxed().collect(toList()))
                 .build();
     }
 
-    static Patron patronQualifyingForFreeBook() {
+    public static Patron patronQualifyingForFreeBook() {
         return newPatron()
                 .withPoints(10000)
                 .build();
     }
 
-    static class PatronBuilder {
+    public static class PatronBuilder {
         private int patronId = SOME_PATRON_ID;
         private int type;
         private int points;
