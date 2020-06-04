@@ -9,6 +9,7 @@ import com.bslota.refactoring.library.model.Patron;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -63,7 +64,15 @@ class BookServiceTest {
 
     @Test
     void shouldSucceedToPlaceBookOnHold() {
+        //given
+        Book book = availableBook();
+        Patron patron = patronWithoutHolds();
 
+        //when
+        boolean result = bookService.placeOnHold(book.getBookId(), patron.getPatronId(), PERIOD_IN_DAYS);
+
+        //then
+        assertTrue(result);
     }
 
     private Book availableBook() {
@@ -80,6 +89,12 @@ class BookServiceTest {
 
     private Patron patronWithMaxNumberOfHolds() {
         Patron patron = PatronFixture.patronWithMaxNumberOfHolds();
+        when(patronDAO.getPatronFromDatabase(patron.getPatronId())).thenReturn(patron);
+        return patron;
+    }
+
+    private Patron patronWithoutHolds() {
+        Patron patron = PatronFixture.patronWithoutHolds();
         when(patronDAO.getPatronFromDatabase(patron.getPatronId())).thenReturn(patron);
         return patron;
     }
