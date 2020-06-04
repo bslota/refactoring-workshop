@@ -50,7 +50,15 @@ class BookServiceTest {
 
     @Test
     void shouldFailToPlaceBookOnHoldWhenItIsNotAvailable() {
+        //given
+        Patron patron = patronWithMaxNumberOfHolds();
+        Book book = unavailableBook();
 
+        //when:
+        boolean result = bookService.placeOnHold(book.getBookId(), patron.getPatronId(), PERIOD_IN_DAYS);
+
+        //then
+        assertFalse(result);
     }
 
     @Test
@@ -60,6 +68,12 @@ class BookServiceTest {
 
     private Book availableBook() {
         Book book = BookFixture.availableBook();
+        when(bookDAO.getBookFromDatabase(book.getBookId())).thenReturn(book);
+        return book;
+    }
+
+    private Book unavailableBook() {
+        Book book = BookFixture.unavailableBook();
         when(bookDAO.getBookFromDatabase(book.getBookId())).thenReturn(book);
         return book;
     }
