@@ -92,12 +92,30 @@ class BookServiceTest {
 
     @Test
     void shouldSaveBookPatronSucceedToPlaceBookOnHold() {
+        //given
+        Book book = availableBook();
+        Patron patron = patronWithoutHolds();
 
+        //when
+        bookService.placeOnHold(book.getBookId(), patron.getPatronId(), PERIOD_IN_DAYS);
+
+        //then
+        verify(bookDAO, atLeastOnce()).update(any());
+        verify(patronDAO, atLeastOnce()).update(any());
+        verify(notificationSender, never()).sendMail(any(), any(), any(), any());
     }
 
     @Test
     void shouldSendNotificationWhenPatronQualifiesForFreeBook() {
+        //given
+        Book book = availableBook();
+        Patron patron = patronQualifyingForFreeBook();
 
+        //when
+        bookService.placeOnHold(book.getBookId(), patron.getPatronId(), PERIOD_IN_DAYS);
+
+        //then
+        verify(notificationSender, atLeastOnce()).sendMail(any(), any(), any(), any());
     }
 
     private Book availableBook() {
@@ -120,6 +138,12 @@ class BookServiceTest {
 
     private Patron patronWithoutHolds() {
         Patron patron = PatronFixture.patronWithoutHolds();
+        when(patronDAO.getPatronFromDatabase(patron.getPatronId())).thenReturn(patron);
+        return patron;
+    }
+
+    private Patron patronQualifyingForFreeBook() {
+        Patron patron = PatronFixture.patronQualifyingForFreeBook();
         when(patronDAO.getPatronFromDatabase(patron.getPatronId())).thenReturn(patron);
         return patron;
     }
