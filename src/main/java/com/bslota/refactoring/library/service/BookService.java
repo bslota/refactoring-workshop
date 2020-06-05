@@ -40,7 +40,7 @@ public class BookService {
             }
         }
         if (flag) {
-            PatronLoyaltiesCalculation.addLoyaltyPointsTo(patron.getPatronLoyalties());
+            patron.getPatronLoyalties().addLoyaltyPoints();
             patronDAO.update(patron);
         }
         if (flag && patron.getPatronLoyalties().isQualifiesForFreeBook()) {
