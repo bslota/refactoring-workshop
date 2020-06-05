@@ -19,7 +19,7 @@ public class Patron {
     }
 
     public PlaceOnHoldResult placeOnHold(Book book) {
-        if (hasNotReachedMaxNumberOfHolds()) {
+        if (hasNotReachedMaxNumberOfHolds() && book.isAvailable()) {
             this.holds.add(book.getBookId().asInt());
             return BookPlacedOnHold.of(book.getBookId(), this.patronId);
         }
