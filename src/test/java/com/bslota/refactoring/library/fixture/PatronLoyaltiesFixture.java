@@ -12,7 +12,8 @@ public class PatronLoyaltiesFixture {
     private static final int UNKNOWN_PATRON_TYPE = 111;
     private static final int REGULAR_PATRON_TYPE = 0;
     private static final int RESEARCHER_PATRON_TYPE = 1;
-    public static final int PREMIUM_PATRON_TYPE = 2;
+    private static final int PREMIUM_PATRON_TYPE = 2;
+    private static final int INITIAL_NUMBER_OF_POINTS = 0;
 
     public static int randomNumberOfPoints() {
         return randomInt();
@@ -26,6 +27,10 @@ public class PatronLoyaltiesFixture {
 
         public static PatronLoyaltiesBuilder patronLoyalties() {
             return new PatronLoyaltiesBuilder();
+        }
+
+        public PatronLoyaltiesBuilder empty() {
+            return withValueOf(INITIAL_NUMBER_OF_POINTS);
         }
 
         public PatronLoyaltiesBuilder withValueOf(int points) {

@@ -2,10 +2,7 @@ package com.bslota.refactoring.library.model;
 
 import org.junit.jupiter.api.Test;
 
-import static com.bslota.refactoring.library.fixture.PatronFixture.PatronBuilder.newPatron;
-import static com.bslota.refactoring.library.fixture.PatronFixture.PatronBuilder.premiumPatron;
-import static com.bslota.refactoring.library.fixture.PatronFixture.PatronBuilder.regularPatron;
-import static com.bslota.refactoring.library.fixture.PatronFixture.PatronBuilder.researcherPatron;
+import static com.bslota.refactoring.library.fixture.PatronLoyaltiesFixture.PatronLoyaltiesBuilder.patronLoyalties;
 import static com.bslota.refactoring.library.fixture.PatronLoyaltiesFixture.randomNumberOfPoints;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -23,16 +20,16 @@ class PatronLoyaltiesCalculationTest {
         int points = randomNumberOfPoints();
 
         //and
-        Patron patron = newPatron()
-                .withUnknownType()
-                .withPoints(points)
+        PatronLoyalties patronLoyalties = patronLoyalties()
+                .withValueOf(points)
+                .forPatronOfUnknownType()
                 .build();
 
         //when
-        patron.getPatronLoyalties().addLoyaltyPoints();
+        patronLoyalties.addLoyaltyPoints();
 
         //then
-        assertEquals(points, patron.getPatronLoyalties().getPoints());
+        assertEquals(points, patronLoyalties.getPoints());
     }
 
     @Test
@@ -41,15 +38,16 @@ class PatronLoyaltiesCalculationTest {
         int points = randomNumberOfPoints();
 
         //and
-        Patron patron = regularPatron()
-                .withPoints(points)
+        PatronLoyalties patronLoyalties = patronLoyalties()
+                .withValueOf(points)
+                .forRegularPatron()
                 .build();
 
         //when
-        patron.getPatronLoyalties().addLoyaltyPoints();
+        patronLoyalties.addLoyaltyPoints();
 
         //then
-        assertEquals(points + 1, patron.getPatronLoyalties().getPoints());
+        assertEquals(points + 1, patronLoyalties.getPoints());
     }
 
     @Test
@@ -58,29 +56,31 @@ class PatronLoyaltiesCalculationTest {
         int points = randomNumberOfPoints();
 
         //and
-        Patron patron = researcherPatron()
-                .withPoints(points)
+        PatronLoyalties patronLoyalties = patronLoyalties()
+                .withValueOf(points)
+                .forResearcherPatron()
                 .build();
 
         //when
-        patron.getPatronLoyalties().addLoyaltyPoints();
+        patronLoyalties.addLoyaltyPoints();
 
         //then
-        assertEquals(points + 5, patron.getPatronLoyalties().getPoints());
+        assertEquals(points + 5, patronLoyalties.getPoints());
     }
 
     @Test
     void shouldSetHundredPointsWhenPatronTypeIsPremiumAndThereWereNoPointsBefore() {
         //given
-        Patron patron = premiumPatron()
-                .withoutPoints()
+        PatronLoyalties patronLoyalties = patronLoyalties()
+                .empty()
+                .forPremiumPatron()
                 .build();
 
         //when
-        patron.getPatronLoyalties().addLoyaltyPoints();
+        patronLoyalties.addLoyaltyPoints();
 
         //then
-        assertEquals(100, patron.getPatronLoyalties().getPoints());
+        assertEquals(100, patronLoyalties.getPoints());
     }
 
     @Test
@@ -89,29 +89,31 @@ class PatronLoyaltiesCalculationTest {
         int points = randomNumberOfPoints();
 
         //and
-        Patron patron = premiumPatron()
-                .withPoints(points)
+        PatronLoyalties patronLoyalties = patronLoyalties()
+                .withValueOf(points)
+                .forPremiumPatron()
                 .build();
 
         //when
-        patron.getPatronLoyalties().addLoyaltyPoints();
+        patronLoyalties.addLoyaltyPoints();
 
         //then
-        assertEquals(points * 2, patron.getPatronLoyalties().getPoints());
+        assertEquals(points * 2, patronLoyalties.getPoints());
     }
 
     @Test
     void shouldSetQualifiesForFreeBookFlagWhenLimitIsReached() {
         //given
-        Patron patron = regularPatron()
-                .withPoints(NUMBER_OF_POINTS_QUALIFYING_FOR_FREE_BOOK - 1)
+        PatronLoyalties patronLoyalties = patronLoyalties()
+                .withValueOf(NUMBER_OF_POINTS_QUALIFYING_FOR_FREE_BOOK - 1)
+                .forRegularPatron()
                 .build();
 
         //when
-        patron.getPatronLoyalties().addLoyaltyPoints();
+        patronLoyalties.addLoyaltyPoints();
 
         //then
-        assertTrue(patron.getPatronLoyalties().isQualifiesForFreeBook());
+        assertTrue(patronLoyalties.isQualifiesForFreeBook());
     }
 
 }
