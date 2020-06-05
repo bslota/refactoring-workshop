@@ -3,6 +3,7 @@ package com.bslota.refactoring.library.service;
 import com.bslota.refactoring.library.dao.BookDAO;
 import com.bslota.refactoring.library.dao.PatronDAO;
 import com.bslota.refactoring.library.model.Book;
+import com.bslota.refactoring.library.model.BookId;
 import com.bslota.refactoring.library.model.BookPlacedOnHold;
 import com.bslota.refactoring.library.model.Patron;
 import com.bslota.refactoring.library.model.PatronLoyalties;

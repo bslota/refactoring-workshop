@@ -1,9 +1,10 @@
 package com.bslota.refactoring.library.dao;
 
-import com.bslota.refactoring.library.model.Book;
 import com.bslota.refactoring.library.entity.BookEntity;
 import com.bslota.refactoring.library.entity.PatronEntity;
+import com.bslota.refactoring.library.model.Book;
 import com.bslota.refactoring.library.model.BookId;
+import com.bslota.refactoring.library.model.BookRepository;
 import com.bslota.refactoring.library.repository.BookJpaRepository;
 import com.bslota.refactoring.library.repository.PatronJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import java.util.Optional;
 import static java.util.Optional.ofNullable;
 
 @Repository
-public class BookDAO {
+public class BookDAO implements BookRepository {
 
     @Autowired
     private BookJpaRepository bookRepository;
@@ -23,13 +24,21 @@ public class BookDAO {
     @Autowired
     private PatronJpaRepository patronRepository;
 
-    public Book getBookFromDatabase(int bookId) {
-        return bookRepository.findById(bookId).map(this::mapToModel).orElse(null);
+    @Override
+    public Optional<Book> findBy(BookId bookId) {
+        return Optional.ofNullable(bookId)
+                .map(BookId::asInt)
+                .map(this::getBookFromDatabase);
     }
 
+    @Override
     @Transactional
     public void update(Book book) {
         bookRepository.save(mapToEntity(book));
+    }
+
+    public Book getBookFromDatabase(int bookId) {
+        return bookRepository.findById(bookId).map(this::mapToModel).orElse(null);
     }
 
     private BookEntity mapToEntity(Book book) {

@@ -9,7 +9,7 @@ public class BookId {
 
     private final int value;
 
-    private BookId(int value) {
+    public BookId(int value) {
         this.value = value;
     }
 
@@ -32,5 +32,9 @@ public class BookId {
     @Override
     public int hashCode() {
         return Objects.hash(value);
+    }
+
+    int getValue() {
+        return value;
     }
 }
