@@ -8,7 +8,7 @@ public class PatronLoyalties {
     public PatronLoyalties() {
     }
 
-    PatronLoyalties(int type, int points, boolean qualifiesForFreeBook) {
+    public PatronLoyalties(int type, int points, boolean qualifiesForFreeBook) {
         this.type = type;
         this.points = points;
         this.qualifiesForFreeBook = qualifiesForFreeBook;

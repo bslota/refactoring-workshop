@@ -2,6 +2,7 @@ package com.bslota.refactoring.library.fixture;
 
 import com.bslota.refactoring.library.model.Patron;
 import com.bslota.refactoring.library.model.PatronId;
+import com.bslota.refactoring.library.model.PatronLoyalties;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -99,7 +100,7 @@ public class PatronFixture {
         }
 
         public Patron build() {
-            return new Patron(patronId, type, points, qualifiesForFreeBook, holds);
+            return new Patron(patronId, holds, new PatronLoyalties(type, points, qualifiesForFreeBook));
         }
     }
 

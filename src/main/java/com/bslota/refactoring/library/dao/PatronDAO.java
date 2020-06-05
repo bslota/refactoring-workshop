@@ -4,6 +4,7 @@ import com.bslota.refactoring.library.model.Patron;
 import com.bslota.refactoring.library.entity.BookEntity;
 import com.bslota.refactoring.library.entity.PatronEntity;
 import com.bslota.refactoring.library.model.PatronId;
+import com.bslota.refactoring.library.model.PatronLoyalties;
 import com.bslota.refactoring.library.repository.BookRepository;
 import com.bslota.refactoring.library.repository.PatronRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,20 +34,18 @@ public class PatronDAO {
     @Transactional
     public void update(Patron patron) {
         PatronEntity patronEntity = patronRepository.findById(patron.getPatronId().asInt()).orElseThrow(() -> new IllegalArgumentException("Patron does not exist"));
-        patronEntity.setPoints(patron.getPoints());
-        patronEntity.setQualifiesForFreeBook(patron.isQualifiesForFreeBook());
+        patronEntity.setPoints(patron.getPatronLoyalties().getPoints());
+        patronEntity.setQualifiesForFreeBook(patron.getPatronLoyalties().isQualifiesForFreeBook());
         patronEntity.setHolds(patron.getHolds().stream().map(id -> bookRepository.findById(id).orElse(null)).filter(Objects::nonNull).collect(Collectors.toSet()));
         patronRepository.save(patronEntity);
     }
 
     private Patron mapToModel(PatronEntity entity) {
         return new Patron(
-                PatronId.of(entity.getPatronId()), entity.getType(),
-                entity.getPoints(),
-                entity.isQualifiesForFreeBook(),
+                PatronId.of(entity.getPatronId()),
                 Optional.ofNullable(entity.getHolds())
                         .orElse(emptySet())
                         .stream()
-                        .map(BookEntity::getBookId).collect(toList()));
+                        .map(BookEntity::getBookId).collect(toList()), new PatronLoyalties(entity.getType(), entity.getPoints(), entity.isQualifiesForFreeBook()));
     }
 }

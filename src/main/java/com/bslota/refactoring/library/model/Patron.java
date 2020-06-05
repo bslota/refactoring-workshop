@@ -8,9 +8,9 @@ public class Patron {
     private PatronId patronId;
     private List<Integer> holds;
 
-    public Patron(PatronId patronId, int type, int points, boolean qualifiesForFreeBook, List<Integer> holds) {
+    public Patron(PatronId patronId, List<Integer> holds, PatronLoyalties patronLoyalties) {
         this.setPatronId(patronId);
-        this.patronLoyalties = new PatronLoyalties(type, points, qualifiesForFreeBook);
+        this.patronLoyalties = patronLoyalties;
         this.holds = holds;
     }
 
@@ -20,30 +20,6 @@ public class Patron {
             return BookPlacedOnHold.of(book.getBookId(), this.patronId);
         }
         return PlacingOnHoldFailed.of(book.getBookId(), this.patronId);
-    }
-
-    public int getType() {
-        return getPatronLoyalties().getType();
-    }
-
-    public void setType(int type) {
-        getPatronLoyalties().setType(type);
-    }
-
-    public int getPoints() {
-        return getPatronLoyalties().getPoints();
-    }
-
-    public void setPoints(int points) {
-        getPatronLoyalties().setPoints(points);
-    }
-
-    public void setQualifiesForFreeBook(boolean flag) {
-        getPatronLoyalties().setQualifiesForFreeBook(flag);
-    }
-
-    public boolean isQualifiesForFreeBook() {
-        return getPatronLoyalties().isQualifiesForFreeBook();
     }
 
     public List<Integer> getHolds() {
@@ -62,11 +38,11 @@ public class Patron {
         this.patronId = patronId;
     }
 
-    public boolean hasNotReachedMaxNumberOfHolds() {
-        return this.holds.size() < MAX_NUMBER_OF_HOLDS;
-    }
-
     public PatronLoyalties getPatronLoyalties() {
         return patronLoyalties;
+    }
+
+    public boolean hasNotReachedMaxNumberOfHolds() {
+        return this.holds.size() < MAX_NUMBER_OF_HOLDS;
     }
 }

@@ -32,7 +32,7 @@ class PatronLoyaltiesCalculationTest {
         PatronLoyaltiesCalculation.addLoyaltyPointsTo(patron);
 
         //then
-        assertEquals(points, patron.getPoints());
+        assertEquals(points, patron.getPatronLoyalties().getPoints());
     }
 
     @Test
@@ -49,7 +49,7 @@ class PatronLoyaltiesCalculationTest {
         PatronLoyaltiesCalculation.addLoyaltyPointsTo(patron);
 
         //then
-        assertEquals(points + 1, patron.getPoints());
+        assertEquals(points + 1, patron.getPatronLoyalties().getPoints());
     }
 
     @Test
@@ -66,7 +66,7 @@ class PatronLoyaltiesCalculationTest {
         PatronLoyaltiesCalculation.addLoyaltyPointsTo(patron);
 
         //then
-        assertEquals(points + 5, patron.getPoints());
+        assertEquals(points + 5, patron.getPatronLoyalties().getPoints());
     }
 
     @Test
@@ -80,7 +80,7 @@ class PatronLoyaltiesCalculationTest {
         PatronLoyaltiesCalculation.addLoyaltyPointsTo(patron);
 
         //then
-        assertEquals(100, patron.getPoints());
+        assertEquals(100, patron.getPatronLoyalties().getPoints());
     }
 
     @Test
@@ -97,7 +97,7 @@ class PatronLoyaltiesCalculationTest {
         PatronLoyaltiesCalculation.addLoyaltyPointsTo(patron);
 
         //then
-        assertEquals(points * 2, patron.getPoints());
+        assertEquals(points * 2, patron.getPatronLoyalties().getPoints());
     }
 
     @Test
@@ -111,7 +111,7 @@ class PatronLoyaltiesCalculationTest {
         PatronLoyaltiesCalculation.addLoyaltyPointsTo(patron);
 
         //then
-        assertTrue(patron.isQualifiesForFreeBook());
+        assertTrue(patron.getPatronLoyalties().isQualifiesForFreeBook());
     }
 
 }

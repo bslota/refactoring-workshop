@@ -38,7 +38,7 @@ public class BookService {
             PatronLoyaltiesCalculation.addLoyaltyPointsTo(patron);
             patronDAO.update(patron);
         }
-        if (flag && patron.isQualifiesForFreeBook()) {
+        if (flag && patron.getPatronLoyalties().isQualifiesForFreeBook()) {
             sendNotificationAboutFreeBookRewardFor(patron);
         }
         return flag;
@@ -47,7 +47,7 @@ public class BookService {
     private void sendNotificationAboutFreeBookRewardFor(Patron patron) {
         String title = "[REWARD] Patron for free book reward waiting";
         String body = "Dear Colleague, \n" +
-                "One of our patrons with ID " + patron.getPatronId().asInt() + " gathered " + patron.getPoints() + ". \n" +
+                "One of our patrons with ID " + patron.getPatronId().asInt() + " gathered " + patron.getPatronLoyalties().getPoints() + ". \n" +
                 "Please contact him and prepare a free book reward!";
         String employees = "customerservice@your-library.com";
         emailService.sendMail(new String[]{employees}, "contact@your-library.com", title, body);
