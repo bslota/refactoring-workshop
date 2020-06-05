@@ -5,12 +5,14 @@ public class PatronLoyalties {
     private int type;
     private int points;
     private boolean qualifiesForFreeBook;
+    private PointCalculationStrategy pointCalculationStrategy;
 
     public PatronLoyalties(int patronId, int type, int points, boolean qualifiesForFreeBook) {
         this.patronId = patronId;
         this.type = type;
         this.points = points;
         this.qualifiesForFreeBook = qualifiesForFreeBook;
+        this.pointCalculationStrategy = PointCalculationStrategy.from(type);
     }
 
     public int getPatronId() {
@@ -39,5 +41,12 @@ public class PatronLoyalties {
 
     public boolean isQualifiesForFreeBook() {
         return this.qualifiesForFreeBook;
+    }
+
+    public void addLoyaltyPoints() {
+        this.points = pointCalculationStrategy.calculate(this);
+        if (this.points > 10000) {
+            setQualifiesForFreeBook(true);
+        }
     }
 }
