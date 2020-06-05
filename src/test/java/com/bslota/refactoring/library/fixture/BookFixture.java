@@ -1,6 +1,7 @@
 package com.bslota.refactoring.library.fixture;
 
 import com.bslota.refactoring.library.model.Book;
+import com.bslota.refactoring.library.model.BookId;
 
 import java.time.Instant;
 
@@ -70,7 +71,7 @@ public class BookFixture {
         }
 
         Book build() {
-            return new Book(bookId, reservationDate, reservationEndDate, type, patronId);
+            return new Book(BookId.of(bookId), reservationDate, reservationEndDate, type, patronId);
         }
     }
 }

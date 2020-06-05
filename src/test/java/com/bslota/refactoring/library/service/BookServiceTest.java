@@ -47,7 +47,7 @@ class BookServiceTest {
         Patron patron = patronWithMaxNumberOfHolds();
 
         //when
-        boolean result = bookService.placeOnHold(book.getBookId(), patron.getPatronId().asInt(), PERIOD_IN_DAYS);
+        boolean result = bookService.placeOnHold(book.getBookId().asInt(), patron.getPatronId().asInt(), PERIOD_IN_DAYS);
 
         //then
         assertFalse(result);
@@ -60,7 +60,7 @@ class BookServiceTest {
         Book book = unavailableBook();
 
         //when:
-        boolean result = bookService.placeOnHold(book.getBookId(), patron.getPatronId().asInt(), PERIOD_IN_DAYS);
+        boolean result = bookService.placeOnHold(book.getBookId().asInt(), patron.getPatronId().asInt(), PERIOD_IN_DAYS);
 
         //then
         assertFalse(result);
@@ -73,7 +73,7 @@ class BookServiceTest {
         Patron patron = patronWithoutHolds();
 
         //when
-        boolean result = bookService.placeOnHold(book.getBookId(), patron.getPatronId().asInt(), PERIOD_IN_DAYS);
+        boolean result = bookService.placeOnHold(book.getBookId().asInt(), patron.getPatronId().asInt(), PERIOD_IN_DAYS);
 
         //then
         assertTrue(result);
@@ -97,7 +97,7 @@ class BookServiceTest {
         Patron patron = patronWithoutHolds();
 
         //when
-        bookService.placeOnHold(book.getBookId(), patron.getPatronId().asInt(), PERIOD_IN_DAYS);
+        bookService.placeOnHold(book.getBookId().asInt(), patron.getPatronId().asInt(), PERIOD_IN_DAYS);
 
         //then
         verify(bookDAO, atLeastOnce()).update(any());
@@ -112,7 +112,7 @@ class BookServiceTest {
         Patron patron = patronQualifyingForFreeBook();
 
         //when
-        bookService.placeOnHold(book.getBookId(), patron.getPatronId().asInt(), PERIOD_IN_DAYS);
+        bookService.placeOnHold(book.getBookId().asInt(), patron.getPatronId().asInt(), PERIOD_IN_DAYS);
 
         //then
         verify(notificationSender, atLeastOnce()).sendMail(any(), any(), any(), any());
@@ -120,13 +120,13 @@ class BookServiceTest {
 
     private Book availableBook() {
         Book book = BookFixture.availableBook();
-        when(bookDAO.getBookFromDatabase(book.getBookId())).thenReturn(book);
+        when(bookDAO.getBookFromDatabase(book.getBookId().asInt())).thenReturn(book);
         return book;
     }
 
     private Book unavailableBook() {
         Book book = BookFixture.unavailableBook();
-        when(bookDAO.getBookFromDatabase(book.getBookId())).thenReturn(book);
+        when(bookDAO.getBookFromDatabase(book.getBookId().asInt())).thenReturn(book);
         return book;
     }
 

@@ -3,6 +3,7 @@ package com.bslota.refactoring.library.dao;
 import com.bslota.refactoring.library.model.Book;
 import com.bslota.refactoring.library.entity.BookEntity;
 import com.bslota.refactoring.library.entity.PatronEntity;
+import com.bslota.refactoring.library.model.BookId;
 import com.bslota.refactoring.library.repository.BookRepository;
 import com.bslota.refactoring.library.repository.PatronRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class BookDAO {
     }
 
     private BookEntity mapToEntity(Book book) {
-        BookEntity bookEntity = bookRepository.findById(book.getBookId()).orElseThrow(() -> new IllegalArgumentException("Book does not exist!"));
+        BookEntity bookEntity = bookRepository.findById(book.getBookId().asInt()).orElseThrow(() -> new IllegalArgumentException("Book does not exist!"));
         PatronEntity patronEntity = Optional.ofNullable(book.getPatronId())
                 .flatMap(patronRepository::findById).orElse(null);
         bookEntity.setReservationDate(book.getReservationDate());
@@ -42,8 +43,8 @@ public class BookDAO {
     }
 
     private Book mapToModel(BookEntity entity) {
-        return new Book(entity.getBookId(),
-                entity.getReservationDate(),
+        return new Book(
+                BookId.of(entity.getBookId()), entity.getReservationDate(),
                 entity.getReservationEndDate(),
                 entity.getType(),
                 ofNullable(entity.getPatronEntity()).map(PatronEntity::getPatronId).orElse(null));

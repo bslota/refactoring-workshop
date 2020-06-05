@@ -5,7 +5,7 @@ import java.util.Objects;
 /**
  * @author bslota on 23/11/2019
  */
-class BookId {
+public class BookId {
 
     private final int value;
 

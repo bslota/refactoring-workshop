@@ -3,26 +3,18 @@ package com.bslota.refactoring.library.model;
 import java.time.Instant;
 
 public class Book {
-    private int bookId;
+    private BookId bookId;
     private Instant reservationDate;
     private Instant reservationEndDate;
     private String type;
     private Integer patronId;
 
-    public Book(int bookId, Instant reservationDate, Instant reservationEndDate, String type, Integer patronId) {
-        this.bookId = bookId;
+    public Book(BookId bookId, Instant reservationDate, Instant reservationEndDate, String type, Integer patronId) {
+        this.setBookId(bookId);
         this.reservationDate = reservationDate;
         this.reservationEndDate = reservationEndDate;
         this.type = type;
         this.patronId = patronId;
-    }
-
-    public int getBookId() {
-        return bookId;
-    }
-
-    public void setBookId(int bookId) {
-        this.bookId = bookId;
     }
 
     public void setReservationDate(Instant now) {
@@ -51,5 +43,13 @@ public class Book {
 
     String getType() {
         return this.type;
+    }
+
+    public BookId getBookId() {
+        return bookId;
+    }
+
+    public void setBookId(BookId bookId) {
+        this.bookId = bookId;
     }
 }
