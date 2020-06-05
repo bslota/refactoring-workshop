@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static com.bslota.refactoring.library.fixture.BookFixture.availableBook;
 import static com.bslota.refactoring.library.fixture.PatronFixture.PatronBuilder.newPatron;
+import static com.bslota.refactoring.library.fixture.PatronFixture.patronWithMaxNumberOfHolds;
 import static com.bslota.refactoring.library.fixture.PatronFixture.patronWithoutHolds;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -57,5 +58,16 @@ class PatronTest {
 
     @Test
     void shouldReturnFailureWhenPatronHasReachedMaxNumberOfHolds() {
+        //given
+        Book book = availableBook();
+        Patron patron = patronWithMaxNumberOfHolds();
+
+        //when
+        PlaceOnHoldResult result = patron.placeOnHold(book);
+
+        //then
+        assertTrue(result instanceof PlacingOnHoldFailed);
+        assertEquals(patron.getPatronId(), result.patronId());
+        assertEquals(book.getBookId(), result.bookId());
     }
 }

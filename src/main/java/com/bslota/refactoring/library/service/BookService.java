@@ -24,7 +24,7 @@ public class BookService {
         Patron patron = patronDAO.getPatronFromDatabase(patronId);
         boolean flag = false;
         if (thereIsA(book) && thereIsA(patron)) {
-            if (maxNumberOfHoldsIsNotReachedBy(patron)) {
+            if (patron.hasNotReachedMaxNumberOfHolds()) {
                 if (book.isAvailable()) {
                     placeOnHold(book, patron, days);
                     bookDAO.update(book);
@@ -59,10 +59,6 @@ public class BookService {
 
     private boolean isAvailable(Book book) {
         return book.getReservationDate() == null;
-    }
-
-    private boolean maxNumberOfHoldsIsNotReachedBy(Patron patron) {
-        return !(patron.getHolds().size() >= 5);
     }
 
     private boolean thereIsA(Patron patron) {
