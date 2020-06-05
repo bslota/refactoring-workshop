@@ -12,6 +12,7 @@ import com.bslota.refactoring.library.model.PlaceOnHoldResult;
 import com.bslota.refactoring.library.util.MailDetails;
 import com.bslota.refactoring.library.util.MailDetailsFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -30,7 +31,8 @@ public class BookService {
         this.mailDetailsFactory = mailDetailsFactory;
     }
 
-    boolean placeOnHold(int bookId, int patronId, int days) {
+    @Transactional
+    public boolean placeOnHold(int bookId, int patronId, int days) {
         Optional<Book> book = bookRepository.findBy(BookId.of(bookId));
         Optional<Patron> patron = patronRepository.findBy(PatronId.of(patronId));
         if (book.isPresent() && patron.isPresent()) {
