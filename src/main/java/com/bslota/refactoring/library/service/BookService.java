@@ -59,12 +59,4 @@ public class BookService {
         emailService.sendMail(details.recipients(), "contact@your-library.com", details.title(), details.body());
     }
 
-    private boolean thereIsA(Patron patron) {
-        return patron != null;
-    }
-
-    private boolean thereIsA(Book book) {
-        return book != null;
-    }
-
 }
