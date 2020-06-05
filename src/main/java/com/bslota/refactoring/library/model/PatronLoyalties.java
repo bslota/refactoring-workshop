@@ -1,14 +1,20 @@
 package com.bslota.refactoring.library.model;
 
 public class PatronLoyalties {
+    private int patronId;
     private int type;
     private int points;
     private boolean qualifiesForFreeBook;
 
-    public PatronLoyalties(int type, int points, boolean qualifiesForFreeBook) {
+    public PatronLoyalties(int patronId, int type, int points, boolean qualifiesForFreeBook) {
+        this.patronId = patronId;
         this.type = type;
         this.points = points;
         this.qualifiesForFreeBook = qualifiesForFreeBook;
+    }
+
+    int getPatronId() {
+        return patronId;
     }
 
     public int getType() {
