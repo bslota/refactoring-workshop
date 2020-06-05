@@ -5,9 +5,6 @@ public class PatronLoyalties {
     private int points;
     private boolean qualifiesForFreeBook;
 
-    public PatronLoyalties() {
-    }
-
     public PatronLoyalties(int type, int points, boolean qualifiesForFreeBook) {
         this.type = type;
         this.points = points;
