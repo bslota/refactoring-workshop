@@ -8,7 +8,7 @@ import com.bslota.refactoring.library.model.Patron;
 import com.bslota.refactoring.library.model.PatronLoyalties;
 import com.bslota.refactoring.library.model.PlaceOnHoldResult;
 import com.bslota.refactoring.library.util.MailDetails;
-import com.bslota.refactoring.library.util.MailUtils;
+import com.bslota.refactoring.library.util.MailDetailsFactory;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,11 +17,13 @@ public class BookService {
     private final BookDAO bookDAO;
     private final PatronDAO patronDAO;
     private final NotificationSender emailService;
+    private final MailDetailsFactory mailDetailsFactory;
 
-    BookService(BookDAO bookDAO, PatronDAO patronDAO, NotificationSender emailService) {
+    BookService(BookDAO bookDAO, PatronDAO patronDAO, NotificationSender emailService, MailDetailsFactory mailDetailsFactory) {
         this.bookDAO = bookDAO;
         this.patronDAO = patronDAO;
         this.emailService = emailService;
+        this.mailDetailsFactory = mailDetailsFactory;
     }
 
     boolean placeOnHold(int bookId, int patronId, int days) {
@@ -48,7 +50,7 @@ public class BookService {
     }
 
     private void sendNotificationAboutFreeBookRewardFor(PatronLoyalties patronLoyalties) {
-        MailDetails details = MailUtils.freeBookRewardNotificationFor(patronLoyalties);
+        MailDetails details = mailDetailsFactory.getFreeBookRewardNotificationFor(patronLoyalties);
         emailService.sendMail(details.recipients(), "contact@your-library.com", details.title(), details.body());
     }
 

@@ -6,6 +6,7 @@ import com.bslota.refactoring.library.fixture.BookFixture;
 import com.bslota.refactoring.library.fixture.PatronFixture;
 import com.bslota.refactoring.library.model.Book;
 import com.bslota.refactoring.library.model.Patron;
+import com.bslota.refactoring.library.util.MailDetailsFactory;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -29,7 +30,7 @@ class BookServiceTest {
     private BookDAO bookDAO = mock(BookDAO.class);
     private PatronDAO patronDAO = mock(PatronDAO.class);
     private NotificationSender notificationSender = mock(NotificationSender.class);
-    private BookService bookService = new BookService(bookDAO, patronDAO, notificationSender);
+    private BookService bookService = new BookService(bookDAO, patronDAO, notificationSender, new MailDetailsFactory());
 
     @Test
     void shouldFailToPlaceNotExistingBookOnHold() {
