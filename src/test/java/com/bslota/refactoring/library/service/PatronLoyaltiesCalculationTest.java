@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static com.bslota.refactoring.library.fixture.PatronFixture.PatronBuilder.newPatron;
 import static com.bslota.refactoring.library.fixture.PatronFixture.PatronBuilder.regularPatron;
+import static com.bslota.refactoring.library.fixture.PatronFixture.PatronBuilder.researcherPatron;
 import static com.bslota.refactoring.library.fixture.PatronLoyaltiesFixture.randomNumberOfPoints;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -50,7 +51,19 @@ class PatronLoyaltiesCalculationTest {
 
     @Test
     void shouldAddPointsWhenPatronTypeIsResearcher() {
+        //given
+        int points = randomNumberOfPoints();
 
+        //and
+        Patron patron = researcherPatron()
+                .withPoints(points)
+                .build();
+
+        //when
+        PatronLoyaltiesCalculation.addLoyaltyPointsTo(patron);
+
+        //then
+        assertEquals(points + 5, patron.getPoints());
     }
 
     @Test
