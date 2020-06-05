@@ -16,6 +16,8 @@ import static java.util.stream.Collectors.toList;
 public class PatronFixture {
 
     private static final int SOME_PATRON_ID = 10;
+    public static final int UNKNOWN_TYPE = 111;
+    public static final int INITIAL_POINT_COUNT = 0;
 
     public static Patron patronWithoutHolds() {
         return newPatron().build();
@@ -49,22 +51,34 @@ public class PatronFixture {
             return this;
         }
 
-        PatronBuilder withType(int type) {
+        public PatronBuilder withType(int type) {
             this.type = type;
             return this;
         }
 
-        PatronBuilder withPoints(int points) {
+        public PatronBuilder withUnknownType() {
+            return withType(UNKNOWN_TYPE);
+        }
+
+        public PatronBuilder withPoints(int points) {
             this.points = points;
             return this;
         }
 
-        PatronBuilder withQualifiesForFreeBook(boolean qualifiesForFreeBook) {
+        public PatronBuilder withoutPoints() {
+            return withPoints(INITIAL_POINT_COUNT);
+        }
+
+        public PatronBuilder withRandomNumberOfPoints() {
+            return withPoints(NumericFixture.randomInt());
+        }
+
+        public PatronBuilder withQualifiesForFreeBook(boolean qualifiesForFreeBook) {
             this.qualifiesForFreeBook = qualifiesForFreeBook;
             return this;
         }
 
-        PatronBuilder withHolds(List<Integer> holds) {
+        public PatronBuilder withHolds(List<Integer> holds) {
             this.holds = holds;
             return this;
         }
@@ -73,4 +87,5 @@ public class PatronFixture {
             return new Patron(patronId, type, points, qualifiesForFreeBook, holds);
         }
     }
+
 }
