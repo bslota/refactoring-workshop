@@ -2,6 +2,7 @@ package com.bslota.refactoring.library.model;
 
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
@@ -22,6 +23,11 @@ class PatronIdTest {
 
     @Test
     void shouldBeConvertedToInt() {
+        //when
+        PatronId id = PatronId.of(SOME_VALUE);
+
+        //then
+        assertEquals(SOME_VALUE, id.asInt());
     }
 
     @Test

@@ -5,7 +5,17 @@ package com.bslota.refactoring.library.model;
  */
 class PatronId {
 
+    private final int value;
+
+    private PatronId(int value) {
+        this.value = value;
+    }
+
     static PatronId of(int i) {
-        return new PatronId();
+        return new PatronId(i);
+    }
+
+    int asInt() {
+        return value;
     }
 }
