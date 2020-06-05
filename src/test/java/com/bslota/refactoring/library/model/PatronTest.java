@@ -3,6 +3,7 @@ package com.bslota.refactoring.library.model;
 import org.junit.jupiter.api.Test;
 
 import static com.bslota.refactoring.library.fixture.BookFixture.availableBook;
+import static com.bslota.refactoring.library.fixture.BookFixture.unavailableBook;
 import static com.bslota.refactoring.library.fixture.PatronFixture.PatronBuilder.newPatron;
 import static com.bslota.refactoring.library.fixture.PatronFixture.patronWithMaxNumberOfHolds;
 import static com.bslota.refactoring.library.fixture.PatronFixture.patronWithoutHolds;
@@ -73,5 +74,14 @@ class PatronTest {
 
     @Test
     void shouldReturnFailureWhenBookIsNotAvailable() {
+        //given
+        Book book = unavailableBook();
+        Patron patron = patronWithoutHolds();
+
+        //when
+        PlaceOnHoldResult result = patron.placeOnHold(book);
+
+        //then
+        assertTrue(result instanceof PlacingOnHoldFailed);
     }
 }
