@@ -34,14 +34,19 @@ public class PatronFixture {
     }
 
     public static class PatronBuilder {
-        private int patronId = SOME_PATRON_ID;
+        private PatronId patronId = PatronId.of(SOME_PATRON_ID);
         private int type;
         private int points;
         private boolean qualifiesForFreeBook;
         private List<Integer> holds = new LinkedList<>();
 
-        static PatronBuilder newPatron() {
+        public static PatronBuilder newPatron() {
             return new PatronBuilder();
+        }
+
+        public PatronBuilder withId(PatronId id) {
+            patronId = id;
+            return this;
         }
 
         PatronBuilder withType(int type) {
@@ -64,8 +69,8 @@ public class PatronFixture {
             return this;
         }
 
-        Patron build() {
-            return new Patron(PatronId.of(patronId), type, points, qualifiesForFreeBook, holds);
+        public Patron build() {
+            return new Patron(patronId, type, points, qualifiesForFreeBook, holds);
         }
     }
 }

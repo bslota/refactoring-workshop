@@ -30,17 +30,17 @@ public class BookFixture {
     }
 
     public static class BookBuilder {
-        private int bookId = EXISTING_BOOK_ID;
+        private BookId bookId = BookId.of(EXISTING_BOOK_ID);
         private String type = DEFAULT_BOOK_TYPE;
         private Instant reservationDate;
         private Instant reservationEndDate;
         private int patronId;
 
-        static BookBuilder newBook() {
+        public static BookBuilder newBook() {
             return new BookBuilder();
         }
 
-        BookBuilder withId(int bookId) {
+        public BookBuilder withId(BookId bookId) {
             this.bookId = bookId;
             return this;
         }
@@ -70,8 +70,8 @@ public class BookFixture {
             return this;
         }
 
-        Book build() {
-            return new Book(BookId.of(bookId), reservationDate, reservationEndDate, type, patronId);
+        public Book build() {
+            return new Book(bookId, reservationDate, reservationEndDate, type, patronId);
         }
     }
 }
