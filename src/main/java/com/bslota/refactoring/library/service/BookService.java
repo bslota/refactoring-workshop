@@ -7,6 +7,7 @@ import com.bslota.refactoring.library.model.BookPlacedOnHold;
 import com.bslota.refactoring.library.model.Patron;
 import com.bslota.refactoring.library.model.PatronLoyalties;
 import com.bslota.refactoring.library.model.PlaceOnHoldResult;
+import com.bslota.refactoring.library.util.MailDetails;
 import com.bslota.refactoring.library.util.MailUtils;
 import org.springframework.stereotype.Service;
 
@@ -47,7 +48,7 @@ public class BookService {
     }
 
     private void sendNotificationAboutFreeBookRewardFor(PatronLoyalties patronLoyalties) {
-        MailUtils.MailDetails details = MailUtils.freeBookRewardNotificationFor(patronLoyalties);
+        MailDetails details = MailUtils.freeBookRewardNotificationFor(patronLoyalties);
         emailService.sendMail(details.recipients(), "contact@your-library.com", details.title(), details.body());
     }
 
