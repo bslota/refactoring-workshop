@@ -5,7 +5,7 @@ import java.util.Objects;
 /**
  * @author bslota on 05/06/2020
  */
-class PatronId {
+public class PatronId {
 
     private final int value;
 
@@ -13,7 +13,7 @@ class PatronId {
         this.value = value;
     }
 
-    static PatronId of(int i) {
+    public static PatronId of(int i) {
         return new PatronId(i);
     }
 

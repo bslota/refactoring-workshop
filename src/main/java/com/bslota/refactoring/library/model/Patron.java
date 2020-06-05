@@ -3,16 +3,14 @@ package com.bslota.refactoring.library.model;
 import java.util.List;
 
 public class Patron {
-    private int patronIdValue;
     private PatronId patronId;
     private int type;
     private int points;
     private boolean qualifiesForFreeBook;
     private List<Integer> holds;
 
-    public Patron(int patronId, int type, int points, boolean qualifiesForFreeBook, List<Integer> holds) {
-        this.patronIdValue = patronId;
-        this.patronId = PatronId.of(patronIdValue);
+    public Patron(PatronId patronId, int type, int points, boolean qualifiesForFreeBook, List<Integer> holds) {
+        this.patronId = patronId;
         this.type = type;
         this.points = points;
         this.qualifiesForFreeBook = qualifiesForFreeBook;

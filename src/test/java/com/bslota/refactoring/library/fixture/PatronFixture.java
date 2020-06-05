@@ -1,6 +1,7 @@
 package com.bslota.refactoring.library.fixture;
 
 import com.bslota.refactoring.library.model.Patron;
+import com.bslota.refactoring.library.model.PatronId;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -64,7 +65,7 @@ public class PatronFixture {
         }
 
         Patron build() {
-            return new Patron(patronId, type, points, qualifiesForFreeBook, holds);
+            return new Patron(PatronId.of(patronId), type, points, qualifiesForFreeBook, holds);
         }
     }
 }

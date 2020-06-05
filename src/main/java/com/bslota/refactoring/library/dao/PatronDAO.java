@@ -3,6 +3,7 @@ package com.bslota.refactoring.library.dao;
 import com.bslota.refactoring.library.model.Patron;
 import com.bslota.refactoring.library.entity.BookEntity;
 import com.bslota.refactoring.library.entity.PatronEntity;
+import com.bslota.refactoring.library.model.PatronId;
 import com.bslota.refactoring.library.repository.BookRepository;
 import com.bslota.refactoring.library.repository.PatronRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +40,8 @@ public class PatronDAO {
     }
 
     private Patron mapToModel(PatronEntity entity) {
-        return new Patron(entity.getPatronId(),
-                entity.getType(),
+        return new Patron(
+                PatronId.of(entity.getPatronId()), entity.getType(),
                 entity.getPoints(),
                 entity.isQualifiesForFreeBook(),
                 Optional.ofNullable(entity.getHolds())
