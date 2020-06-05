@@ -20,6 +20,7 @@ public class PatronFixture {
     private static final int INITIAL_POINT_COUNT = 0;
     private static final int REGULAR_TYPE = 0;
     private static final int RESEARCHER_TYPE = 1;
+    public static final int PREMIUM_PATRON = 2;
 
     public static Patron patronWithoutHolds() {
         return newPatron().build();
@@ -50,6 +51,10 @@ public class PatronFixture {
 
         public static PatronBuilder researcherPatron() {
             return newPatron().withType(RESEARCHER_TYPE);
+        }
+
+        public static PatronBuilder premiumPatron() {
+            return newPatron().withType(PREMIUM_PATRON);
         }
 
         public static PatronBuilder newPatron() {

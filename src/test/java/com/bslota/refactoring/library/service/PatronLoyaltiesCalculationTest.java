@@ -4,6 +4,7 @@ import com.bslota.refactoring.library.model.Patron;
 import org.junit.jupiter.api.Test;
 
 import static com.bslota.refactoring.library.fixture.PatronFixture.PatronBuilder.newPatron;
+import static com.bslota.refactoring.library.fixture.PatronFixture.PatronBuilder.premiumPatron;
 import static com.bslota.refactoring.library.fixture.PatronFixture.PatronBuilder.regularPatron;
 import static com.bslota.refactoring.library.fixture.PatronFixture.PatronBuilder.researcherPatron;
 import static com.bslota.refactoring.library.fixture.PatronLoyaltiesFixture.randomNumberOfPoints;
@@ -68,12 +69,33 @@ class PatronLoyaltiesCalculationTest {
 
     @Test
     void shouldSetHundredPointsWhenPatronTypeIsPremiumAndThereWereNoPointsBefore() {
+        //given
+        Patron patron = premiumPatron()
+                .withoutPoints()
+                .build();
 
+        //when
+        PatronLoyaltiesCalculation.addLoyaltyPointsTo(patron);
+
+        //then
+        assertEquals(100, patron.getPoints());
     }
 
     @Test
     void shouldDoubleThePointsWhenPatronTypeIsPremiumAndThereWereSomePointsBefore() {
+        //given
+        int points = randomNumberOfPoints();
 
+        //and
+        Patron patron = premiumPatron()
+                .withPoints(points)
+                .build();
+
+        //when
+        PatronLoyaltiesCalculation.addLoyaltyPointsTo(patron);
+
+        //then
+        assertEquals(points * 2, patron.getPoints());
     }
 
     @Test
