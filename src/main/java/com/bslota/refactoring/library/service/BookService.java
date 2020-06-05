@@ -1,6 +1,5 @@
 package com.bslota.refactoring.library.service;
 
-import com.bslota.refactoring.library.dao.PatronDAO;
 import com.bslota.refactoring.library.model.Book;
 import com.bslota.refactoring.library.model.BookId;
 import com.bslota.refactoring.library.model.BookPlacedOnHold;
@@ -34,7 +33,6 @@ public class BookService {
     boolean placeOnHold(int bookId, int patronId, int days) {
         Optional<Book> book = bookRepository.findBy(BookId.of(bookId));
         Optional<Patron> patron = patronRepository.findBy(PatronId.of(patronId));
-        boolean flag = false;
         if (book.isPresent() && patron.isPresent()) {
             PlaceOnHoldResult result = patron.get().placeOnHold(book.get());
             if (result instanceof BookPlacedOnHold) {
@@ -45,10 +43,10 @@ public class BookService {
                 if (patron.get().getPatronLoyalties().isQualifiesForFreeBook()) {
                     sendNotificationAboutFreeBookRewardFor(patron.get().getPatronLoyalties());
                 }
-                flag = true;
+                return true;
             }
         }
-        return flag;
+        return false;
     }
 
     private void sendNotificationAboutFreeBookRewardFor(PatronLoyalties patronLoyalties) {
