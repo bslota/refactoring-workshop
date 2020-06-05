@@ -29,7 +29,7 @@ class PatronLoyaltiesCalculationTest {
                 .build();
 
         //when
-        PatronLoyaltiesCalculation.addLoyaltyPointsTo(patron);
+        PatronLoyaltiesCalculation.addLoyaltyPointsTo(patron.getPatronLoyalties());
 
         //then
         assertEquals(points, patron.getPatronLoyalties().getPoints());
@@ -46,7 +46,7 @@ class PatronLoyaltiesCalculationTest {
                 .build();
 
         //when
-        PatronLoyaltiesCalculation.addLoyaltyPointsTo(patron);
+        PatronLoyaltiesCalculation.addLoyaltyPointsTo(patron.getPatronLoyalties());
 
         //then
         assertEquals(points + 1, patron.getPatronLoyalties().getPoints());
@@ -63,7 +63,7 @@ class PatronLoyaltiesCalculationTest {
                 .build();
 
         //when
-        PatronLoyaltiesCalculation.addLoyaltyPointsTo(patron);
+        PatronLoyaltiesCalculation.addLoyaltyPointsTo(patron.getPatronLoyalties());
 
         //then
         assertEquals(points + 5, patron.getPatronLoyalties().getPoints());
@@ -77,7 +77,7 @@ class PatronLoyaltiesCalculationTest {
                 .build();
 
         //when
-        PatronLoyaltiesCalculation.addLoyaltyPointsTo(patron);
+        PatronLoyaltiesCalculation.addLoyaltyPointsTo(patron.getPatronLoyalties());
 
         //then
         assertEquals(100, patron.getPatronLoyalties().getPoints());
@@ -94,7 +94,7 @@ class PatronLoyaltiesCalculationTest {
                 .build();
 
         //when
-        PatronLoyaltiesCalculation.addLoyaltyPointsTo(patron);
+        PatronLoyaltiesCalculation.addLoyaltyPointsTo(patron.getPatronLoyalties());
 
         //then
         assertEquals(points * 2, patron.getPatronLoyalties().getPoints());
@@ -108,7 +108,7 @@ class PatronLoyaltiesCalculationTest {
                 .build();
 
         //when
-        PatronLoyaltiesCalculation.addLoyaltyPointsTo(patron);
+        PatronLoyaltiesCalculation.addLoyaltyPointsTo(patron.getPatronLoyalties());
 
         //then
         assertTrue(patron.getPatronLoyalties().isQualifiesForFreeBook());
