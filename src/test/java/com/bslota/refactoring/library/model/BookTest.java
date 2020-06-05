@@ -3,7 +3,9 @@ package com.bslota.refactoring.library.model;
 import org.junit.jupiter.api.Test;
 
 import static com.bslota.refactoring.library.fixture.BookFixture.BookBuilder.newBook;
+import static com.bslota.refactoring.library.fixture.BookFixture.availableBook;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 /**
  * @author bslota on 19/11/2019
@@ -26,5 +28,15 @@ class BookTest {
 
     @Test
     void shouldBePlacedOnHold() {
+        //given
+        Book book = availableBook();
+        PatronId patronId = PatronId.of(SOME_INT_VALUE);
+        int periodInDays = 100;
+
+        //when
+        book.placedOnHold(patronId, periodInDays);
+
+        //then
+        assertFalse(book.isAvailable());
     }
 }

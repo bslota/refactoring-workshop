@@ -2,6 +2,8 @@ package com.bslota.refactoring.library.model;
 
 import java.time.Instant;
 
+import static java.time.temporal.ChronoUnit.DAYS;
+
 public class Book {
     private BookId bookId;
     private Instant reservationDate;
@@ -17,24 +19,12 @@ public class Book {
         this.patronId = patronId;
     }
 
-    public void setReservationDate(Instant now) {
-        this.reservationDate = now;
-    }
-
-    public void setReservationEndDate(Instant date) {
-        this.reservationEndDate = date;
-    }
-
     public Instant getReservationDate() {
         return this.reservationDate;
     }
 
     public Instant getReservationEndDate() {
         return reservationEndDate;
-    }
-
-    public void setPatronId(Integer patronId) {
-        this.patronId = patronId;
     }
 
     public Integer getPatronId() {
@@ -51,5 +41,15 @@ public class Book {
 
     public void setBookId(BookId bookId) {
         this.bookId = bookId;
+    }
+
+    public void placedOnHold(PatronId patronId, int days) {
+        this.reservationDate = Instant.now();
+        this.reservationEndDate = Instant.now().plus(days, DAYS);
+        this.patronId = patronId.asInt();
+    }
+
+    public boolean isAvailable() {
+        return reservationDate == null;
     }
 }
