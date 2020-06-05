@@ -24,4 +24,7 @@ class BookTest {
         assertEquals(id, book.getBookId());
     }
 
+    @Test
+    void shouldBePlacedOnHold() {
+    }
 }
