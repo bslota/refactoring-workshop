@@ -4,7 +4,7 @@ import com.bslota.refactoring.library.model.Patron;
 
 public class PatronLoyaltiesCalculation {
 
-    static void addLoyaltyPoints(Patron patron) {
+    static void addLoyaltyPointsTo(Patron patron) {
         int type = patron.getType();
         switch (type) {
             case 0: // regular patron
