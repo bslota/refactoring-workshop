@@ -17,6 +17,10 @@ public class Patron {
         this.holds = holds;
     }
 
+    public void placeOnHold(Book book) {
+        this.holds.add(book.getBookId().asInt());
+    }
+
     public int getType() {
         return this.type;
     }
