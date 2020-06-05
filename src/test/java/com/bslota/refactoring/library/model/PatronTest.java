@@ -70,4 +70,8 @@ class PatronTest {
         assertEquals(patron.getPatronId(), result.patronId());
         assertEquals(book.getBookId(), result.bookId());
     }
+
+    @Test
+    void shouldReturnFailureWhenBookIsNotAvailable() {
+    }
 }
