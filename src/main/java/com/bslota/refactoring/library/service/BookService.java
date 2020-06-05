@@ -61,7 +61,7 @@ public class BookService {
         return book != null;
     }
 
-    private void addLoyaltyPoints(Patron patron) {
+    private static void addLoyaltyPoints(Patron patron) {
         int type = patron.getType();
         switch (type) {
             case 0: // regular patron
