@@ -38,4 +38,12 @@ class PatronTest {
         //then
         assertEquals(1, patron.getHolds().size());
     }
+
+    @Test
+    void shouldReturnSuccessWhenBookIsPlacedOnHold() {
+    }
+
+    @Test
+    void shouldReturnFailureWhenPatronHasReachedMaxNumberOfHolds() {
+    }
 }
