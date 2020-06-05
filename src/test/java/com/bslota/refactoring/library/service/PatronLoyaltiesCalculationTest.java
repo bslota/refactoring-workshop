@@ -20,6 +20,11 @@ class PatronLoyaltiesCalculationTest {
     }
 
     @Test
+    void shouldAddPointsWhenPatronTypeIsResearcher() {
+
+    }
+
+    @Test
     void shouldSetHundredPointsWhenPatronTypeIsPremiumAndThereWereNoPointsBefore() {
 
     }
