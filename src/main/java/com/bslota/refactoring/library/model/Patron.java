@@ -23,27 +23,27 @@ public class Patron {
     }
 
     public int getType() {
-        return patronLoyalties.getType();
+        return getPatronLoyalties().getType();
     }
 
     public void setType(int type) {
-        patronLoyalties.setType(type);
+        getPatronLoyalties().setType(type);
     }
 
     public int getPoints() {
-        return patronLoyalties.getPoints();
+        return getPatronLoyalties().getPoints();
     }
 
     public void setPoints(int points) {
-        patronLoyalties.setPoints(points);
+        getPatronLoyalties().setPoints(points);
     }
 
     public void setQualifiesForFreeBook(boolean flag) {
-        patronLoyalties.setQualifiesForFreeBook(flag);
+        getPatronLoyalties().setQualifiesForFreeBook(flag);
     }
 
     public boolean isQualifiesForFreeBook() {
-        return patronLoyalties.isQualifiesForFreeBook();
+        return getPatronLoyalties().isQualifiesForFreeBook();
     }
 
     public List<Integer> getHolds() {
@@ -64,5 +64,9 @@ public class Patron {
 
     public boolean hasNotReachedMaxNumberOfHolds() {
         return this.holds.size() < MAX_NUMBER_OF_HOLDS;
+    }
+
+    public PatronLoyalties getPatronLoyalties() {
+        return patronLoyalties;
     }
 }
