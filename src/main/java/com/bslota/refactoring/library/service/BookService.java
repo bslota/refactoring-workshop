@@ -5,6 +5,7 @@ import com.bslota.refactoring.library.dao.PatronDAO;
 import com.bslota.refactoring.library.model.Book;
 import com.bslota.refactoring.library.model.BookPlacedOnHold;
 import com.bslota.refactoring.library.model.Patron;
+import com.bslota.refactoring.library.model.PatronLoyalties;
 import com.bslota.refactoring.library.model.PlaceOnHoldResult;
 import org.springframework.stereotype.Service;
 
@@ -39,15 +40,15 @@ public class BookService {
             patronDAO.update(patron);
         }
         if (flag && patron.getPatronLoyalties().isQualifiesForFreeBook()) {
-            sendNotificationAboutFreeBookRewardFor(patron);
+            sendNotificationAboutFreeBookRewardFor(patron.getPatronLoyalties());
         }
         return flag;
     }
 
-    private void sendNotificationAboutFreeBookRewardFor(Patron patron) {
+    private void sendNotificationAboutFreeBookRewardFor(PatronLoyalties patronLoyalties) {
         String title = "[REWARD] Patron for free book reward waiting";
         String body = "Dear Colleague, \n" +
-                "One of our patrons with ID " + patron.getPatronId().asInt() + " gathered " + patron.getPatronLoyalties().getPoints() + ". \n" +
+                "One of our patrons with ID " + patronLoyalties.getPatronId() + " gathered " + patronLoyalties.getPoints() + ". \n" +
                 "Please contact him and prepare a free book reward!";
         String employees = "customerservice@your-library.com";
         emailService.sendMail(new String[]{employees}, "contact@your-library.com", title, body);

@@ -13,7 +13,7 @@ public class PatronLoyalties {
         this.qualifiesForFreeBook = qualifiesForFreeBook;
     }
 
-    int getPatronId() {
+    public int getPatronId() {
         return patronId;
     }
 
