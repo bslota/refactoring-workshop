@@ -2,8 +2,8 @@ package com.bslota.refactoring.library.service;
 
 import com.bslota.refactoring.library.entity.BookEntity;
 import com.bslota.refactoring.library.entity.PatronEntity;
-import com.bslota.refactoring.library.repository.BookRepository;
-import com.bslota.refactoring.library.repository.PatronRepository;
+import com.bslota.refactoring.library.repository.BookJpaRepository;
+import com.bslota.refactoring.library.repository.PatronJpaRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,10 +16,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class BookServiceIT {
 
     @Autowired
-    BookRepository bookRepository;
+    BookJpaRepository bookRepository;
 
     @Autowired
-    PatronRepository patronRepository;
+    PatronJpaRepository patronRepository;
 
     @Autowired
     BookService bookService;

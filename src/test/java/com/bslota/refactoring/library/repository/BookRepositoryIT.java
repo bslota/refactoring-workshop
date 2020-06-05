@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class BookRepositoryIT {
 
     @Autowired
-    private BookRepository bookRepository;
+    private BookJpaRepository bookRepository;
 
     @Test
     void shouldGetCreatedBook() {

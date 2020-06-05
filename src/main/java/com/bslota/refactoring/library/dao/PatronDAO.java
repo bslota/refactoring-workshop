@@ -5,8 +5,8 @@ import com.bslota.refactoring.library.entity.BookEntity;
 import com.bslota.refactoring.library.entity.PatronEntity;
 import com.bslota.refactoring.library.model.PatronId;
 import com.bslota.refactoring.library.model.PatronLoyalties;
-import com.bslota.refactoring.library.repository.BookRepository;
-import com.bslota.refactoring.library.repository.PatronRepository;
+import com.bslota.refactoring.library.repository.BookJpaRepository;
+import com.bslota.refactoring.library.repository.PatronJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,10 +22,10 @@ import static java.util.stream.Collectors.toList;
 public class PatronDAO {
 
     @Autowired
-    private PatronRepository patronRepository;
+    private PatronJpaRepository patronRepository;
 
     @Autowired
-    private BookRepository bookRepository;
+    private BookJpaRepository bookRepository;
 
     public Patron getPatronFromDatabase(int patronId) {
         return patronRepository.findById(patronId).map(this::mapToModel).orElse(null);

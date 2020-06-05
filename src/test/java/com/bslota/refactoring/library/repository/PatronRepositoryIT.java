@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class PatronRepositoryIT {
 
     @Autowired
-    private PatronRepository patronRepository;
+    private PatronJpaRepository patronRepository;
 
     @Test
     void shouldGetCreatedPatron() {

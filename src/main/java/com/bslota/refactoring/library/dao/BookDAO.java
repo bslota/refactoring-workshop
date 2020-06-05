@@ -4,8 +4,8 @@ import com.bslota.refactoring.library.model.Book;
 import com.bslota.refactoring.library.entity.BookEntity;
 import com.bslota.refactoring.library.entity.PatronEntity;
 import com.bslota.refactoring.library.model.BookId;
-import com.bslota.refactoring.library.repository.BookRepository;
-import com.bslota.refactoring.library.repository.PatronRepository;
+import com.bslota.refactoring.library.repository.BookJpaRepository;
+import com.bslota.refactoring.library.repository.PatronJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,10 +18,10 @@ import static java.util.Optional.ofNullable;
 public class BookDAO {
 
     @Autowired
-    private BookRepository bookRepository;
+    private BookJpaRepository bookRepository;
 
     @Autowired
-    private PatronRepository patronRepository;
+    private PatronJpaRepository patronRepository;
 
     public Book getBookFromDatabase(int bookId) {
         return bookRepository.findById(bookId).map(this::mapToModel).orElse(null);
