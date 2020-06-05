@@ -24,4 +24,7 @@ class PatronTest {
         assertEquals(id, patron.getPatronId());
     }
 
+    @Test
+    void shouldPlaceBookOnHold() {
+    }
 }
