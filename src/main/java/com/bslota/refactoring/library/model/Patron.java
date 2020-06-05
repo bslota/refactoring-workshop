@@ -10,7 +10,7 @@ public class Patron {
     private List<Integer> holds;
 
     public Patron(PatronId patronId, int type, int points, boolean qualifiesForFreeBook, List<Integer> holds) {
-        this.patronId = patronId;
+        this.setPatronId(patronId);
         this.type = type;
         this.points = points;
         this.qualifiesForFreeBook = qualifiesForFreeBook;
@@ -18,11 +18,11 @@ public class Patron {
     }
 
     public int getPatronIdValue() {
-        return patronId.asInt();
+        return getPatronId().asInt();
     }
 
     public void setPatronIdValue(int patronId) {
-        this.patronId = PatronId.of(patronId);
+        this.setPatronId(PatronId.of(patronId));
     }
 
     public int getType() {
@@ -55,5 +55,13 @@ public class Patron {
 
     public void setHolds(List<Integer> holds) {
         this.holds = holds;
+    }
+
+    public PatronId getPatronId() {
+        return patronId;
+    }
+
+    public void setPatronId(PatronId patronId) {
+        this.patronId = patronId;
     }
 }

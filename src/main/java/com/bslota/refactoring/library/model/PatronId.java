@@ -17,7 +17,7 @@ public class PatronId {
         return new PatronId(i);
     }
 
-    int asInt() {
+    public int asInt() {
         return value;
     }
 
