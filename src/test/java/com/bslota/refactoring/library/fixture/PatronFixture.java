@@ -16,8 +16,9 @@ import static java.util.stream.Collectors.toList;
 public class PatronFixture {
 
     private static final int SOME_PATRON_ID = 10;
-    public static final int UNKNOWN_TYPE = 111;
-    public static final int INITIAL_POINT_COUNT = 0;
+    private static final int UNKNOWN_TYPE = 111;
+    private static final int INITIAL_POINT_COUNT = 0;
+    private static final int REGULAR_TYPE = 0;
 
     public static Patron patronWithoutHolds() {
         return newPatron().build();
@@ -41,6 +42,10 @@ public class PatronFixture {
         private int points;
         private boolean qualifiesForFreeBook;
         private List<Integer> holds = new LinkedList<>();
+
+        public static PatronBuilder regularPatron() {
+            return newPatron().withType(REGULAR_TYPE);
+        }
 
         public static PatronBuilder newPatron() {
             return new PatronBuilder();
