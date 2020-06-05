@@ -34,17 +34,24 @@ public class BookService {
         Optional<Book> book = bookRepository.findBy(BookId.of(bookId));
         Optional<Patron> patron = patronRepository.findBy(PatronId.of(patronId));
         if (book.isPresent() && patron.isPresent()) {
-            PlaceOnHoldResult result = patron.get().placeOnHold(book.get());
-            if (result instanceof BookPlacedOnHold) {
-                book.get().placedOnHold(patron.get().getPatronId(), days);
-                patron.get().getPatronLoyalties().addLoyaltyPoints();
-                bookRepository.update(book.get());
-                patronRepository.update(patron.get());
-                if (patron.get().getPatronLoyalties().isQualifiesForFreeBook()) {
-                    sendNotificationAboutFreeBookRewardFor(patron.get().getPatronLoyalties());
-                }
-                return true;
+            Patron foundPatron = patron.get();
+            Book foundBook = book.get();
+            return placeOnHold(foundPatron, foundBook, days);
+        }
+        return false;
+    }
+
+    private boolean placeOnHold(Patron patron, Book book, int days) {
+        PlaceOnHoldResult result = patron.placeOnHold(book);
+        if (result instanceof BookPlacedOnHold) {
+            book.placedOnHold(patron.getPatronId(), days);
+            patron.getPatronLoyalties().addLoyaltyPoints();
+            bookRepository.update(book);
+            patronRepository.update(patron);
+            if (patron.getPatronLoyalties().isQualifiesForFreeBook()) {
+                sendNotificationAboutFreeBookRewardFor(patron.getPatronLoyalties());
             }
+            return true;
         }
         return false;
     }
