@@ -39,17 +39,14 @@ public class BookService {
             PlaceOnHoldResult result = patron.get().placeOnHold(book.get());
             if (result instanceof BookPlacedOnHold) {
                 book.get().placedOnHold(patron.get().getPatronId(), days);
+                patron.get().getPatronLoyalties().addLoyaltyPoints();
                 bookRepository.update(book.get());
                 patronRepository.update(patron.get());
+                if (patron.get().getPatronLoyalties().isQualifiesForFreeBook()) {
+                    sendNotificationAboutFreeBookRewardFor(patron.get().getPatronLoyalties());
+                }
                 flag = true;
             }
-        }
-        if (flag) {
-            patron.get().getPatronLoyalties().addLoyaltyPoints();
-            patronRepository.update(patron.get());
-        }
-        if (flag && patron.get().getPatronLoyalties().isQualifiesForFreeBook()) {
-            sendNotificationAboutFreeBookRewardFor(patron.get().getPatronLoyalties());
         }
         return flag;
     }
