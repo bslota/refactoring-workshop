@@ -32,5 +32,11 @@ class PatronIdTest {
 
     @Test
     void twoPatronIdsWithTheSameValueShouldBeEqual() {
+        //given
+        PatronId firstId = PatronId.of(SOME_VALUE);
+        PatronId secondID = PatronId.of(SOME_VALUE);
+
+        //expect
+        assertEquals(firstId, secondID);
     }
 }
