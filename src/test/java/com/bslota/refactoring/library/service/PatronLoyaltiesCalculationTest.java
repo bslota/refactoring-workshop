@@ -15,6 +15,8 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class PatronLoyaltiesCalculationTest {
 
+    public static final int NUMBER_OF_POINTS_QUALIFYING_FOR_FREE_BOOK = 10001;
+
     @Test
     void shouldNotChangeNumberOfPointsWhenPatronTypeIsUnknown() {
         //given
@@ -100,7 +102,16 @@ class PatronLoyaltiesCalculationTest {
 
     @Test
     void shouldSetQualifiesForFreeBookFlagWhenLimitIsReached() {
+        //given
+        Patron patron = regularPatron()
+                .withPoints(NUMBER_OF_POINTS_QUALIFYING_FOR_FREE_BOOK - 1)
+                .build();
 
+        //when
+        PatronLoyaltiesCalculation.addLoyaltyPointsTo(patron);
+
+        //then
+        assertTrue(patron.isQualifiesForFreeBook());
     }
 
 }
