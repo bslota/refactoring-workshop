@@ -42,7 +42,7 @@ public class Patron {
         return patronLoyalties;
     }
 
-    public boolean hasNotReachedMaxNumberOfHolds() {
+    private boolean hasNotReachedMaxNumberOfHolds() {
         return this.holds.size() < MAX_NUMBER_OF_HOLDS;
     }
 }
