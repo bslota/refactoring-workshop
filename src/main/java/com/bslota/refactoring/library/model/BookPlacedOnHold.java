@@ -3,7 +3,7 @@ package com.bslota.refactoring.library.model;
 /**
  * @author bslota on 05/06/2020
  */
-class BookPlacedOnHold implements PlaceOnHoldResult {
+public class BookPlacedOnHold implements PlaceOnHoldResult {
 
     private final BookId bookId;
     private final PatronId patronId;

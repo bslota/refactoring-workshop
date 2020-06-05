@@ -3,7 +3,9 @@ package com.bslota.refactoring.library.service;
 import com.bslota.refactoring.library.dao.BookDAO;
 import com.bslota.refactoring.library.dao.PatronDAO;
 import com.bslota.refactoring.library.model.Book;
+import com.bslota.refactoring.library.model.BookPlacedOnHold;
 import com.bslota.refactoring.library.model.Patron;
+import com.bslota.refactoring.library.model.PlaceOnHoldResult;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,9 +26,10 @@ public class BookService {
         Patron patron = patronDAO.getPatronFromDatabase(patronId);
         boolean flag = false;
         if (thereIsA(book) && thereIsA(patron)) {
-            if (patron.hasNotReachedMaxNumberOfHolds()) {
-                if (book.isAvailable()) {
-                    placeOnHold(book, patron, days);
+            if (book.isAvailable()) {
+                PlaceOnHoldResult result = patron.placeOnHold(book);
+                if (result instanceof BookPlacedOnHold) {
+                    book.placedOnHold(patron.getPatronId(), days);
                     bookDAO.update(book);
                     patronDAO.update(patron);
                     flag = true;
@@ -50,15 +53,6 @@ public class BookService {
                 "Please contact him and prepare a free book reward!";
         String employees = "customerservice@your-library.com";
         emailService.sendMail(new String[]{employees}, "contact@your-library.com", title, body);
-    }
-
-    private void placeOnHold(Book book, Patron patron, int days) {
-        patron.placeOnHold(book);
-        book.placedOnHold(patron.getPatronId(), days);
-    }
-
-    private boolean isAvailable(Book book) {
-        return book.getReservationDate() == null;
     }
 
     private boolean thereIsA(Patron patron) {
