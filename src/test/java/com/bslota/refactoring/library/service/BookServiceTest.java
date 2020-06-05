@@ -6,6 +6,7 @@ import com.bslota.refactoring.library.fixture.PatronFixture;
 import com.bslota.refactoring.library.model.Book;
 import com.bslota.refactoring.library.model.BookRepository;
 import com.bslota.refactoring.library.model.Patron;
+import com.bslota.refactoring.library.model.PatronRepository;
 import com.bslota.refactoring.library.util.MailDetailsFactory;
 import org.junit.jupiter.api.Test;
 
@@ -30,9 +31,9 @@ class BookServiceTest {
     private static final int PERIOD_IN_DAYS = 100;
 
     private BookRepository bookRepository = mock(BookRepository.class);
-    private PatronDAO patronDAO = mock(PatronDAO.class);
+    private PatronRepository patronRepository = mock(PatronRepository.class);
     private NotificationSender notificationSender = mock(NotificationSender.class);
-    private BookService bookService = new BookService(bookRepository, patronDAO, notificationSender, new MailDetailsFactory());
+    private BookService bookService = new BookService(bookRepository, patronRepository, notificationSender, new MailDetailsFactory());
 
     @Test
     void shouldFailToPlaceNotExistingBookOnHold() {
@@ -89,7 +90,7 @@ class BookServiceTest {
 
         //then
         verify(bookRepository, never()).update(any());
-        verify(patronDAO, never()).update(any());
+        verify(patronRepository, never()).update(any());
         verify(notificationSender, never()).sendMail(any(), any(), any(), any());
     }
 
@@ -104,7 +105,7 @@ class BookServiceTest {
 
         //then
         verify(bookRepository, atLeastOnce()).update(any());
-        verify(patronDAO, atLeastOnce()).update(any());
+        verify(patronRepository, atLeastOnce()).update(any());
         verify(notificationSender, never()).sendMail(any(), any(), any(), any());
     }
 
@@ -135,19 +136,19 @@ class BookServiceTest {
 
     private Patron patronWithMaxNumberOfHolds() {
         Patron patron = PatronFixture.patronWithMaxNumberOfHolds();
-        when(patronDAO.getPatronFromDatabase(patron.getPatronId().asInt())).thenReturn(patron);
+        when(patronRepository.findBy(patron.getPatronId())).thenReturn(Optional.of(patron));
         return patron;
     }
 
     private Patron patronWithoutHolds() {
         Patron patron = PatronFixture.patronWithoutHolds();
-        when(patronDAO.getPatronFromDatabase(patron.getPatronId().asInt())).thenReturn(patron);
+        when(patronRepository.findBy(patron.getPatronId())).thenReturn(Optional.of(patron));
         return patron;
     }
 
     private Patron patronQualifyingForFreeBook() {
         Patron patron = PatronFixture.patronQualifyingForFreeBook();
-        when(patronDAO.getPatronFromDatabase(patron.getPatronId().asInt())).thenReturn(patron);
+        when(patronRepository.findBy(patron.getPatronId())).thenReturn(Optional.of(patron));
         return patron;
     }
 

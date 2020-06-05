@@ -6,7 +6,9 @@ import com.bslota.refactoring.library.model.BookId;
 import com.bslota.refactoring.library.model.BookPlacedOnHold;
 import com.bslota.refactoring.library.model.BookRepository;
 import com.bslota.refactoring.library.model.Patron;
+import com.bslota.refactoring.library.model.PatronId;
 import com.bslota.refactoring.library.model.PatronLoyalties;
+import com.bslota.refactoring.library.model.PatronRepository;
 import com.bslota.refactoring.library.model.PlaceOnHoldResult;
 import com.bslota.refactoring.library.util.MailDetails;
 import com.bslota.refactoring.library.util.MailDetailsFactory;
@@ -18,36 +20,36 @@ import java.util.Optional;
 public class BookService {
 
     private final BookRepository bookRepository;
-    private final PatronDAO patronDAO;
+    private final PatronRepository patronRepository;
     private final NotificationSender emailService;
     private final MailDetailsFactory mailDetailsFactory;
 
-    BookService(BookRepository bookRepository, PatronDAO patronDAO, NotificationSender emailService, MailDetailsFactory mailDetailsFactory) {
+    BookService(BookRepository bookRepository, PatronRepository patronRepository, NotificationSender emailService, MailDetailsFactory mailDetailsFactory) {
         this.bookRepository = bookRepository;
-        this.patronDAO = patronDAO;
+        this.patronRepository = patronRepository;
         this.emailService = emailService;
         this.mailDetailsFactory = mailDetailsFactory;
     }
 
     boolean placeOnHold(int bookId, int patronId, int days) {
         Optional<Book> book = bookRepository.findBy(BookId.of(bookId));
-        Patron patron = patronDAO.getPatronFromDatabase(patronId);
+        Optional<Patron> patron = patronRepository.findBy(PatronId.of(patronId));
         boolean flag = false;
-        if (book.isPresent() && thereIsA(patron)) {
-            PlaceOnHoldResult result = patron.placeOnHold(book.get());
+        if (book.isPresent() && patron.isPresent()) {
+            PlaceOnHoldResult result = patron.get().placeOnHold(book.get());
             if (result instanceof BookPlacedOnHold) {
-                book.get().placedOnHold(patron.getPatronId(), days);
+                book.get().placedOnHold(patron.get().getPatronId(), days);
                 bookRepository.update(book.get());
-                patronDAO.update(patron);
+                patronRepository.update(patron.get());
                 flag = true;
             }
         }
         if (flag) {
-            patron.getPatronLoyalties().addLoyaltyPoints();
-            patronDAO.update(patron);
+            patron.get().getPatronLoyalties().addLoyaltyPoints();
+            patronRepository.update(patron.get());
         }
-        if (flag && patron.getPatronLoyalties().isQualifiesForFreeBook()) {
-            sendNotificationAboutFreeBookRewardFor(patron.getPatronLoyalties());
+        if (flag && patron.get().getPatronLoyalties().isQualifiesForFreeBook()) {
+            sendNotificationAboutFreeBookRewardFor(patron.get().getPatronLoyalties());
         }
         return flag;
     }
