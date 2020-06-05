@@ -4,6 +4,7 @@ import java.util.List;
 
 public class Patron {
     private int patronIdValue;
+    private PatronId patronId;
     private int type;
     private int points;
     private boolean qualifiesForFreeBook;
@@ -11,6 +12,7 @@ public class Patron {
 
     public Patron(int patronId, int type, int points, boolean qualifiesForFreeBook, List<Integer> holds) {
         this.patronIdValue = patronId;
+        this.patronId = PatronId.of(patronIdValue);
         this.type = type;
         this.points = points;
         this.qualifiesForFreeBook = qualifiesForFreeBook;
@@ -18,11 +20,11 @@ public class Patron {
     }
 
     public int getPatronIdValue() {
-        return patronIdValue;
+        return patronId.asInt();
     }
 
     public void setPatronIdValue(int patronId) {
-        this.patronIdValue = patronId;
+        this.patronId = PatronId.of(patronId);
     }
 
     public int getType() {
