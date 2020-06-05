@@ -5,6 +5,7 @@ import com.bslota.refactoring.library.entity.BookEntity;
 import com.bslota.refactoring.library.entity.PatronEntity;
 import com.bslota.refactoring.library.model.PatronId;
 import com.bslota.refactoring.library.model.PatronLoyalties;
+import com.bslota.refactoring.library.model.PatronRepository;
 import com.bslota.refactoring.library.repository.BookJpaRepository;
 import com.bslota.refactoring.library.repository.PatronJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ import static java.util.Collections.emptySet;
 import static java.util.stream.Collectors.toList;
 
 @Repository
-public class PatronDAO {
+public class PatronDAO implements PatronRepository {
 
     @Autowired
     private PatronJpaRepository patronRepository;
@@ -31,6 +32,14 @@ public class PatronDAO {
         return patronRepository.findById(patronId).map(this::mapToModel).orElse(null);
     }
 
+    @Override
+    public Optional<Patron> findBy(PatronId patronId) {
+        return Optional.ofNullable(patronId)
+                .map(PatronId::asInt)
+                .map(this::getPatronFromDatabase);
+    }
+
+    @Override
     @Transactional
     public void update(Patron patron) {
         PatronEntity patronEntity = patronRepository.findById(patron.getPatronId().asInt()).orElseThrow(() -> new IllegalArgumentException("Patron does not exist"));
