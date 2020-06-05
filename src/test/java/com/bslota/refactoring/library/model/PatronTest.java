@@ -2,7 +2,9 @@ package com.bslota.refactoring.library.model;
 
 import org.junit.jupiter.api.Test;
 
+import static com.bslota.refactoring.library.fixture.BookFixture.availableBook;
 import static com.bslota.refactoring.library.fixture.PatronFixture.PatronBuilder.newPatron;
+import static com.bslota.refactoring.library.fixture.PatronFixture.patronWithoutHolds;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -26,5 +28,14 @@ class PatronTest {
 
     @Test
     void shouldPlaceBookOnHold() {
+        //given
+        Book book = availableBook();
+        Patron patron = patronWithoutHolds();
+
+        //when
+        patron.placeOnHold(book);
+
+        //then
+        assertEquals(1, patron.getHolds().size());
     }
 }
