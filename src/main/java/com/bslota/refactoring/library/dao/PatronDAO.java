@@ -32,7 +32,7 @@ public class PatronDAO {
 
     @Transactional
     public void update(Patron patron) {
-        PatronEntity patronEntity = patronRepository.findById(patron.getPatronIdValue()).orElseThrow(() -> new IllegalArgumentException("Patron does not exist"));
+        PatronEntity patronEntity = patronRepository.findById(patron.getPatronId().asInt()).orElseThrow(() -> new IllegalArgumentException("Patron does not exist"));
         patronEntity.setPoints(patron.getPoints());
         patronEntity.setQualifiesForFreeBook(patron.isQualifiesForFreeBook());
         patronEntity.setHolds(patron.getHolds().stream().map(id -> bookRepository.findById(id).orElse(null)).filter(Objects::nonNull).collect(Collectors.toSet()));

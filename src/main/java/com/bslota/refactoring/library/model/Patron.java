@@ -17,14 +17,6 @@ public class Patron {
         this.holds = holds;
     }
 
-    public int getPatronIdValue() {
-        return getPatronId().asInt();
-    }
-
-    public void setPatronIdValue(int patronId) {
-        this.setPatronId(PatronId.of(patronId));
-    }
-
     public int getType() {
         return this.type;
     }
