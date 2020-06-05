@@ -4,17 +4,13 @@ import java.util.List;
 
 public class Patron {
     public static final int MAX_NUMBER_OF_HOLDS = 5;
+    private final PatronLoyalties patronLoyalties;
     private PatronId patronId;
-    private int type;
-    private int points;
-    private boolean qualifiesForFreeBook;
     private List<Integer> holds;
 
     public Patron(PatronId patronId, int type, int points, boolean qualifiesForFreeBook, List<Integer> holds) {
         this.setPatronId(patronId);
-        this.type = type;
-        this.points = points;
-        this.qualifiesForFreeBook = qualifiesForFreeBook;
+        this.patronLoyalties = new PatronLoyalties(type, points, qualifiesForFreeBook);
         this.holds = holds;
     }
 
@@ -27,27 +23,27 @@ public class Patron {
     }
 
     public int getType() {
-        return this.type;
+        return patronLoyalties.getType();
     }
 
     public void setType(int type) {
-        this.type = type;
+        patronLoyalties.setType(type);
     }
 
     public int getPoints() {
-        return this.points;
+        return patronLoyalties.getPoints();
     }
 
     public void setPoints(int points) {
-        this.points = points;
+        patronLoyalties.setPoints(points);
     }
 
     public void setQualifiesForFreeBook(boolean flag) {
-        this.qualifiesForFreeBook = flag;
+        patronLoyalties.setQualifiesForFreeBook(flag);
     }
 
     public boolean isQualifiesForFreeBook() {
-        return this.qualifiesForFreeBook;
+        return patronLoyalties.isQualifiesForFreeBook();
     }
 
     public List<Integer> getHolds() {
