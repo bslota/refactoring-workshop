@@ -1,10 +1,9 @@
 package com.bslota.refactoring.library.dao;
 
-import com.bslota.refactoring.library.model.Patron;
 import com.bslota.refactoring.library.entity.BookEntity;
 import com.bslota.refactoring.library.entity.PatronEntity;
+import com.bslota.refactoring.library.model.Patron;
 import com.bslota.refactoring.library.model.PatronId;
-import com.bslota.refactoring.library.model.PatronLoyalties;
 import com.bslota.refactoring.library.model.PatronRepository;
 import com.bslota.refactoring.library.repository.BookJpaRepository;
 import com.bslota.refactoring.library.repository.PatronJpaRepository;
@@ -43,8 +42,6 @@ public class PatronDAO implements PatronRepository {
     @Transactional
     public void update(Patron patron) {
         PatronEntity patronEntity = patronRepository.findById(patron.getPatronId().asInt()).orElseThrow(() -> new IllegalArgumentException("Patron does not exist"));
-        patronEntity.setPoints(patron.getPatronLoyalties().getPoints());
-        patronEntity.setQualifiesForFreeBook(patron.getPatronLoyalties().isQualifiesForFreeBook());
         patronEntity.setHolds(patron.getHolds().stream().map(id -> bookRepository.findById(id).orElse(null)).filter(Objects::nonNull).collect(Collectors.toSet()));
         patronRepository.save(patronEntity);
     }
@@ -55,6 +52,6 @@ public class PatronDAO implements PatronRepository {
                 Optional.ofNullable(entity.getHolds())
                         .orElse(emptySet())
                         .stream()
-                        .map(BookEntity::getBookId).collect(toList()), new PatronLoyalties(PatronId.of(entity.getPatronId()), entity.getType(), entity.getPoints(), entity.isQualifiesForFreeBook()));
+                        .map(BookEntity::getBookId).collect(toList()));
     }
 }
