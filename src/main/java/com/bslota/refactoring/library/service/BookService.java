@@ -54,6 +54,7 @@ public class BookService {
             patronLoyalties.addLoyaltyPoints();
             bookRepository.update(book);
             patronRepository.update(patron);
+            patronLoyaltiesRepository.update(patronLoyalties);
             if (patronLoyalties.isQualifiesForFreeBook()) {
                 sendNotificationAboutFreeBookRewardFor(patronLoyalties);
             }
