@@ -48,8 +48,27 @@ class PatronLoyaltiesHandlerTest {
 
     }
 
+    @Test
+    void shouldSendNotificationWhenBookWasPlacedOnHold() {
+        //given
+        PatronLoyalties loyalties = patronLoyaltiesQualifyingForFreeBook();
+        BookPlacedOnHold event = BookPlacedOnHold.of(loyalties.getPatronId().asInt(), availableBook().getBookId().asInt());
+
+        //when
+        domainEvents.publish(event);
+
+        //then
+        verify(notificationSender, atLeastOnce()).sendMail(any(), any(), any(), any());
+    }
+
     PatronLoyalties patronLoyaltiesWithoutPoints() {
         PatronLoyalties patronLoyalties = PatronLoyaltiesFixture.PatronLoyaltiesBuilder.patronLoyalties().empty().build();
+        when(patronLoyaltiesRepository.findBy(patronLoyalties.getPatronId())).thenReturn(Optional.of(patronLoyalties));
+        return patronLoyalties;
+    }
+
+    PatronLoyalties patronLoyaltiesQualifyingForFreeBook() {
+        PatronLoyalties patronLoyalties = PatronLoyaltiesFixture.PatronLoyaltiesBuilder.patronLoyalties().withValueQualifyingForFreeBook().build();
         when(patronLoyaltiesRepository.findBy(patronLoyalties.getPatronId())).thenReturn(Optional.of(patronLoyalties));
         return patronLoyalties;
     }
