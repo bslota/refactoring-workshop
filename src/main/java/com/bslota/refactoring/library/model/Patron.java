@@ -1,5 +1,9 @@
 package com.bslota.refactoring.library.model;
 
+import com.bslota.refactoring.library.events.BookPlacedOnHold;
+import com.bslota.refactoring.library.events.DomainEvent;
+import com.bslota.refactoring.library.events.PlacingOnHoldFailed;
+
 import java.util.List;
 
 public class Patron {
@@ -12,12 +16,12 @@ public class Patron {
         this.holds = holds;
     }
 
-    public PlaceOnHoldResult placeOnHold(Book book) {
+    public DomainEvent placeOnHold(Book book) {
         if (hasNotReachedMaxNumberOfHolds() && book.isAvailable()) {
             this.holds.add(book.getBookId().asInt());
-            return BookPlacedOnHold.of(book.getBookId(), this.patronId);
+            return BookPlacedOnHold.of(this.patronId.asInt(), book.getBookId().asInt());
         }
-        return PlacingOnHoldFailed.of(book.getBookId(), this.patronId);
+        return PlacingOnHoldFailed.of(this.patronId.asInt(), book.getBookId().asInt());
     }
 
     public List<Integer> getHolds() {

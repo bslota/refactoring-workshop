@@ -1,15 +1,15 @@
 package com.bslota.refactoring.library.service;
 
+import com.bslota.refactoring.library.events.BookPlacedOnHold;
+import com.bslota.refactoring.library.events.DomainEvent;
 import com.bslota.refactoring.library.model.Book;
 import com.bslota.refactoring.library.model.BookId;
-import com.bslota.refactoring.library.model.BookPlacedOnHold;
 import com.bslota.refactoring.library.model.BookRepository;
 import com.bslota.refactoring.library.model.Patron;
 import com.bslota.refactoring.library.model.PatronId;
 import com.bslota.refactoring.library.model.PatronLoyalties;
 import com.bslota.refactoring.library.model.PatronLoyaltiesRepository;
 import com.bslota.refactoring.library.model.PatronRepository;
-import com.bslota.refactoring.library.model.PlaceOnHoldResult;
 import com.bslota.refactoring.library.util.MailDetails;
 import com.bslota.refactoring.library.util.MailDetailsFactory;
 import org.springframework.stereotype.Service;
@@ -47,13 +47,13 @@ public class BookService {
     }
 
     private boolean placeOnHold(Patron patron, Book book, int days) {
-        PlaceOnHoldResult result = patron.placeOnHold(book);
+        DomainEvent result = patron.placeOnHold(book);
         if (result instanceof BookPlacedOnHold) {
             book.placedOnHold(patron.getPatronId(), days);
             bookRepository.update(book);
             patronRepository.update(patron);
 
-            PatronLoyalties patronLoyalties = getPatronLoyalties(patron.getPatronId());
+            PatronLoyalties patronLoyalties = getPatronLoyalties(PatronId.of(((BookPlacedOnHold) result).getPatronId()));
             patronLoyalties.addLoyaltyPoints();
             patronLoyaltiesRepository.update(patronLoyalties);
             if (patronLoyalties.isQualifiesForFreeBook()) {

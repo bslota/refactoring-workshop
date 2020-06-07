@@ -1,5 +1,8 @@
 package com.bslota.refactoring.library.model;
 
+import com.bslota.refactoring.library.events.BookPlacedOnHold;
+import com.bslota.refactoring.library.events.DomainEvent;
+import com.bslota.refactoring.library.events.PlacingOnHoldFailed;
 import org.junit.jupiter.api.Test;
 
 import static com.bslota.refactoring.library.fixture.BookFixture.availableBook;
@@ -49,12 +52,12 @@ class PatronTest {
         Patron patron = patronWithoutHolds();
 
         //when
-        PlaceOnHoldResult result = patron.placeOnHold(book);
+        DomainEvent result = patron.placeOnHold(book);
 
         //then
         assertTrue(result instanceof BookPlacedOnHold);
-        assertEquals(patron.getPatronId(), result.patronId());
-        assertEquals(book.getBookId(), result.bookId());
+        assertEquals(patron.getPatronId().asInt(), ((BookPlacedOnHold) result).getPatronId());
+        assertEquals(book.getBookId().asInt(), ((BookPlacedOnHold) result).getBookId());
     }
 
     @Test
@@ -64,12 +67,12 @@ class PatronTest {
         Patron patron = patronWithMaxNumberOfHolds();
 
         //when
-        PlaceOnHoldResult result = patron.placeOnHold(book);
+        DomainEvent result = patron.placeOnHold(book);
 
         //then
         assertTrue(result instanceof PlacingOnHoldFailed);
-        assertEquals(patron.getPatronId(), result.patronId());
-        assertEquals(book.getBookId(), result.bookId());
+        assertEquals(patron.getPatronId().asInt(), ((PlacingOnHoldFailed) result).getPatronId());
+        assertEquals(book.getBookId().asInt(), ((PlacingOnHoldFailed) result).getBookId());
     }
 
     @Test
@@ -79,7 +82,7 @@ class PatronTest {
         Patron patron = patronWithoutHolds();
 
         //when
-        PlaceOnHoldResult result = patron.placeOnHold(book);
+        DomainEvent result = patron.placeOnHold(book);
 
         //then
         assertTrue(result instanceof PlacingOnHoldFailed);
