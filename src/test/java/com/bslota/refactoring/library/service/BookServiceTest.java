@@ -1,5 +1,6 @@
 package com.bslota.refactoring.library.service;
 
+import com.bslota.refactoring.library.events.infrastructure.InMemoryDomainEvents;
 import com.bslota.refactoring.library.fixture.BookFixture;
 import com.bslota.refactoring.library.fixture.PatronFixture;
 import com.bslota.refactoring.library.model.Book;
@@ -36,7 +37,7 @@ class BookServiceTest {
     private PatronRepository patronRepository = mock(PatronRepository.class);
     private PatronLoyaltiesRepository patronLoyaltiesRepository = mock(PatronLoyaltiesRepository.class);
     private NotificationSender notificationSender = mock(NotificationSender.class);
-    private BookService bookService = new BookService(bookRepository, patronRepository, patronLoyaltiesRepository, notificationSender, new MailDetailsFactory());
+    private BookService bookService = new BookService(bookRepository, patronRepository, patronLoyaltiesRepository, notificationSender, new InMemoryDomainEvents(), new MailDetailsFactory());
 
     @Test
     void shouldFailToPlaceNotExistingBookOnHold() {

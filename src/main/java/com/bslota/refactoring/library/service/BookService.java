@@ -2,6 +2,7 @@ package com.bslota.refactoring.library.service;
 
 import com.bslota.refactoring.library.events.BookPlacedOnHold;
 import com.bslota.refactoring.library.events.DomainEvent;
+import com.bslota.refactoring.library.events.DomainEvents;
 import com.bslota.refactoring.library.model.Book;
 import com.bslota.refactoring.library.model.BookId;
 import com.bslota.refactoring.library.model.BookRepository;
@@ -25,12 +26,14 @@ public class BookService {
     private final PatronLoyaltiesRepository patronLoyaltiesRepository;
     private final NotificationSender emailService;
     private final MailDetailsFactory mailDetailsFactory;
+    private final DomainEvents domainEvents;
 
-    BookService(BookRepository bookRepository, PatronRepository patronRepository, PatronLoyaltiesRepository patronLoyaltiesRepository, NotificationSender emailService, MailDetailsFactory mailDetailsFactory) {
+    BookService(BookRepository bookRepository, PatronRepository patronRepository, PatronLoyaltiesRepository patronLoyaltiesRepository, NotificationSender emailService, DomainEvents domainEvents, MailDetailsFactory mailDetailsFactory) {
         this.bookRepository = bookRepository;
         this.patronRepository = patronRepository;
         this.patronLoyaltiesRepository = patronLoyaltiesRepository;
         this.emailService = emailService;
+        this.domainEvents = domainEvents;
         this.mailDetailsFactory = mailDetailsFactory;
     }
 
