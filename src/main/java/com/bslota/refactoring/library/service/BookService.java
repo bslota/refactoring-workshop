@@ -53,15 +53,19 @@ public class BookService {
             bookRepository.update(book);
             patronRepository.update(patron);
 
-            PatronLoyalties patronLoyalties = getPatronLoyalties(PatronId.of(((BookPlacedOnHold) result).getPatronId()));
-            patronLoyalties.addLoyaltyPoints();
-            patronLoyaltiesRepository.update(patronLoyalties);
-            if (patronLoyalties.isQualifiesForFreeBook()) {
-                sendNotificationAboutFreeBookRewardFor(patronLoyalties);
-            }
+            handle((BookPlacedOnHold) result);
             return true;
         }
         return false;
+    }
+
+    private void handle(BookPlacedOnHold event) {
+        PatronLoyalties patronLoyalties = getPatronLoyalties(PatronId.of(event.getPatronId()));
+        patronLoyalties.addLoyaltyPoints();
+        patronLoyaltiesRepository.update(patronLoyalties);
+        if (patronLoyalties.isQualifiesForFreeBook()) {
+            sendNotificationAboutFreeBookRewardFor(patronLoyalties);
+        }
     }
 
     private PatronLoyalties getPatronLoyalties(PatronId patronId) {
