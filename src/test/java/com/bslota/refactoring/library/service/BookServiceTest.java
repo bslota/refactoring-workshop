@@ -2,7 +2,6 @@ package com.bslota.refactoring.library.service;
 
 import com.bslota.refactoring.library.fixture.BookFixture;
 import com.bslota.refactoring.library.fixture.PatronFixture;
-import com.bslota.refactoring.library.fixture.PatronLoyaltiesFixture;
 import com.bslota.refactoring.library.model.Book;
 import com.bslota.refactoring.library.model.BookRepository;
 import com.bslota.refactoring.library.model.Patron;
@@ -95,6 +94,7 @@ class BookServiceTest {
         //then
         verify(bookRepository, never()).update(any());
         verify(patronRepository, never()).update(any());
+        verify(patronLoyaltiesRepository, never()).update(any());
         verify(notificationSender, never()).sendMail(any(), any(), any(), any());
     }
 
@@ -110,6 +110,7 @@ class BookServiceTest {
         //then
         verify(bookRepository, atLeastOnce()).update(any());
         verify(patronRepository, atLeastOnce()).update(any());
+        verify(patronLoyaltiesRepository, atLeastOnce()).update(any());
         verify(notificationSender, never()).sendMail(any(), any(), any(), any());
     }
 
