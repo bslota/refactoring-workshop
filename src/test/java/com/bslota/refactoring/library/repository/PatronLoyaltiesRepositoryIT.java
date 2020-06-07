@@ -20,11 +20,8 @@ class PatronLoyaltiesRepositoryIT {
 
     @Test
     void shouldGetCreatedPatron() {
-        PatronLoyaltiesEntity patronLoyaltiesEntity = new PatronLoyaltiesEntity();
-        patronLoyaltiesEntity.setPatronId(randomInt());
-        patronLoyaltiesEntity.setPatronType(REGULAR_PATRON_TYPE);
-        patronLoyaltiesEntity.setPoints(randomNumberOfPoints());
-        patronLoyaltiesEntity.setQualifiesForFreeBook(nextBoolean());
+        PatronLoyaltiesEntity patronLoyaltiesEntity = new PatronLoyaltiesEntity(randomInt(),
+                REGULAR_PATRON_TYPE, randomNumberOfPoints(), nextBoolean());
         repository.save(patronLoyaltiesEntity);
 
         PatronLoyaltiesEntity foundLoyalties = repository.findById(patronLoyaltiesEntity.getPatronId()).get();

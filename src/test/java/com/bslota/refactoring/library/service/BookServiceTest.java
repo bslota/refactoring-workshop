@@ -2,15 +2,19 @@ package com.bslota.refactoring.library.service;
 
 import com.bslota.refactoring.library.fixture.BookFixture;
 import com.bslota.refactoring.library.fixture.PatronFixture;
+import com.bslota.refactoring.library.fixture.PatronLoyaltiesFixture;
 import com.bslota.refactoring.library.model.Book;
 import com.bslota.refactoring.library.model.BookRepository;
 import com.bslota.refactoring.library.model.Patron;
+import com.bslota.refactoring.library.model.PatronLoyalties;
+import com.bslota.refactoring.library.model.PatronLoyaltiesRepository;
 import com.bslota.refactoring.library.model.PatronRepository;
 import com.bslota.refactoring.library.util.MailDetailsFactory;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
+import static com.bslota.refactoring.library.fixture.PatronLoyaltiesFixture.PatronLoyaltiesBuilder.patronLoyalties;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -31,8 +35,9 @@ class BookServiceTest {
 
     private BookRepository bookRepository = mock(BookRepository.class);
     private PatronRepository patronRepository = mock(PatronRepository.class);
+    private PatronLoyaltiesRepository patronLoyaltiesRepository = mock(PatronLoyaltiesRepository.class);
     private NotificationSender notificationSender = mock(NotificationSender.class);
-    private BookService bookService = new BookService(bookRepository, patronRepository, notificationSender, new MailDetailsFactory());
+    private BookService bookService = new BookService(bookRepository, patronRepository, patronLoyaltiesRepository, notificationSender, new MailDetailsFactory());
 
     @Test
     void shouldFailToPlaceNotExistingBookOnHold() {
@@ -147,7 +152,9 @@ class BookServiceTest {
 
     private Patron patronQualifyingForFreeBook() {
         Patron patron = PatronFixture.patronQualifyingForFreeBook();
+        PatronLoyalties patronLoyalties = patronLoyalties().withValueQualifyingForFreeBook().build();
         when(patronRepository.findBy(patron.getPatronId())).thenReturn(Optional.of(patron));
+        when(patronLoyaltiesRepository.findBy(patron.getPatronId())).thenReturn(Optional.of(patronLoyalties));
         return patron;
     }
 

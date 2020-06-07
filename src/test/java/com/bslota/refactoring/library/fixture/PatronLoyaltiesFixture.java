@@ -15,6 +15,7 @@ public class PatronLoyaltiesFixture {
     private static final int RESEARCHER_PATRON_TYPE = 1;
     private static final int PREMIUM_PATRON_TYPE = 2;
     private static final int INITIAL_NUMBER_OF_POINTS = 0;
+    private static final int NUMBER_OF_POINTS_QUALIFYING_FOR_FREE_BOOK = 10001;
 
     public static int randomNumberOfPoints() {
         return randomInt();
@@ -37,6 +38,10 @@ public class PatronLoyaltiesFixture {
         public PatronLoyaltiesBuilder withValueOf(int points) {
             this.points = points;
             return this;
+        }
+
+        public PatronLoyaltiesBuilder withValueQualifyingForFreeBook() {
+            return withValueOf(NUMBER_OF_POINTS_QUALIFYING_FOR_FREE_BOOK);
         }
 
         public PatronLoyaltiesBuilder forPatronOfUnknownType() {

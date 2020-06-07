@@ -16,6 +16,16 @@ public class PatronLoyaltiesEntity {
     private int points;
     private boolean qualifiesForFreeBook;
 
+    PatronLoyaltiesEntity() {
+    }
+
+    public PatronLoyaltiesEntity(int patronId, int patronType, int points, boolean qualifiesForFreeBook) {
+        this.patronId = patronId;
+        this.patronType = patronType;
+        this.points = points;
+        this.qualifiesForFreeBook = qualifiesForFreeBook;
+    }
+
     public int getPatronId() {
         return patronId;
     }
