@@ -7,6 +7,7 @@ import com.bslota.refactoring.library.model.BookRepository;
 import com.bslota.refactoring.library.model.Patron;
 import com.bslota.refactoring.library.model.PatronId;
 import com.bslota.refactoring.library.model.PatronLoyalties;
+import com.bslota.refactoring.library.model.PatronLoyaltiesRepository;
 import com.bslota.refactoring.library.model.PatronRepository;
 import com.bslota.refactoring.library.model.PlaceOnHoldResult;
 import com.bslota.refactoring.library.util.MailDetails;
@@ -21,12 +22,14 @@ public class BookService {
 
     private final BookRepository bookRepository;
     private final PatronRepository patronRepository;
+    private final PatronLoyaltiesRepository patronLoyaltiesRepository;
     private final NotificationSender emailService;
     private final MailDetailsFactory mailDetailsFactory;
 
-    BookService(BookRepository bookRepository, PatronRepository patronRepository, NotificationSender emailService, MailDetailsFactory mailDetailsFactory) {
+    BookService(BookRepository bookRepository, PatronRepository patronRepository, PatronLoyaltiesRepository patronLoyaltiesRepository, NotificationSender emailService, MailDetailsFactory mailDetailsFactory) {
         this.bookRepository = bookRepository;
         this.patronRepository = patronRepository;
+        this.patronLoyaltiesRepository = patronLoyaltiesRepository;
         this.emailService = emailService;
         this.mailDetailsFactory = mailDetailsFactory;
     }
@@ -47,15 +50,21 @@ public class BookService {
         PlaceOnHoldResult result = patron.placeOnHold(book);
         if (result instanceof BookPlacedOnHold) {
             book.placedOnHold(patron.getPatronId(), days);
-            patron.getPatronLoyalties().addLoyaltyPoints();
+            PatronLoyalties patronLoyalties = getPatronLoyalties(patron);
+            patronLoyalties.addLoyaltyPoints();
             bookRepository.update(book);
             patronRepository.update(patron);
-            if (patron.getPatronLoyalties().isQualifiesForFreeBook()) {
-                sendNotificationAboutFreeBookRewardFor(patron.getPatronLoyalties());
+            if (patronLoyalties.isQualifiesForFreeBook()) {
+                sendNotificationAboutFreeBookRewardFor(patronLoyalties);
             }
             return true;
         }
         return false;
+    }
+
+    private PatronLoyalties getPatronLoyalties(Patron patron) {
+        return patronLoyaltiesRepository.findBy(patron.getPatronId())
+                .orElse(PatronLoyalties.emptyFor(patron.getPatronId()));
     }
 
     private void sendNotificationAboutFreeBookRewardFor(PatronLoyalties patronLoyalties) {
