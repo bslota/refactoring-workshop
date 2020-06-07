@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * @author bslota on 07/06/2020
  */
-class InMemoryDomainEvents implements DomainEvents {
+public class InMemoryDomainEvents implements DomainEvents {
 
     private List<DomainEventsListener> listeners = new LinkedList<>();
 
