@@ -100,7 +100,7 @@ public class PatronFixture {
         }
 
         public Patron build() {
-            return new Patron(patronId, holds, new PatronLoyalties(patronId.asInt(), type, points, qualifiesForFreeBook));
+            return new Patron(patronId, holds, new PatronLoyalties(patronId, type, points, qualifiesForFreeBook));
         }
     }
 

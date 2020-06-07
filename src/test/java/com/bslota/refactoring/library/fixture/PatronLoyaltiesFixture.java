@@ -1,5 +1,6 @@
 package com.bslota.refactoring.library.fixture;
 
+import com.bslota.refactoring.library.model.PatronId;
 import com.bslota.refactoring.library.model.PatronLoyalties;
 
 import static com.bslota.refactoring.library.fixture.NumericFixture.randomInt;
@@ -20,7 +21,7 @@ public class PatronLoyaltiesFixture {
     }
 
     public static class PatronLoyaltiesBuilder {
-        private int patronId = randomInt();
+        private PatronId patronId = PatronId.of(randomInt());
         private int type;
         private int points;
         private boolean qualifiesForFreeBook;

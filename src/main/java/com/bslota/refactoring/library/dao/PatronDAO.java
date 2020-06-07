@@ -55,6 +55,6 @@ public class PatronDAO implements PatronRepository {
                 Optional.ofNullable(entity.getHolds())
                         .orElse(emptySet())
                         .stream()
-                        .map(BookEntity::getBookId).collect(toList()), new PatronLoyalties(entity.getPatronId(), entity.getType(), entity.getPoints(), entity.isQualifiesForFreeBook()));
+                        .map(BookEntity::getBookId).collect(toList()), new PatronLoyalties(PatronId.of(entity.getPatronId()), entity.getType(), entity.getPoints(), entity.isQualifiesForFreeBook()));
     }
 }
