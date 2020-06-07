@@ -22,7 +22,7 @@ class BookServiceIT {
     PatronJpaRepository patronRepository;
 
     @Autowired
-    BookService bookService;
+    PlacingOnHold bookService;
 
     @Test
     void shouldPlaceBookOnHold() {

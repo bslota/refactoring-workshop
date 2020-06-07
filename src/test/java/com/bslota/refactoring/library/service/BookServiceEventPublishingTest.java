@@ -8,9 +8,7 @@ import com.bslota.refactoring.library.fixture.PatronFixture;
 import com.bslota.refactoring.library.model.Book;
 import com.bslota.refactoring.library.model.BookRepository;
 import com.bslota.refactoring.library.model.Patron;
-import com.bslota.refactoring.library.model.PatronLoyaltiesRepository;
 import com.bslota.refactoring.library.model.PatronRepository;
-import com.bslota.refactoring.library.util.MailDetailsFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -33,11 +31,9 @@ class BookServiceEventPublishingTest {
 
     private BookRepository bookRepository = mock(BookRepository.class);
     private PatronRepository patronRepository = mock(PatronRepository.class);
-    private PatronLoyaltiesRepository patronLoyaltiesRepository = mock(PatronLoyaltiesRepository.class);
-    private NotificationSender notificationSender = mock(NotificationSender.class);
     private InMemoryDomainEvents domainEvents = new InMemoryDomainEvents();
     private FakeEventListener eventListener = new FakeEventListener();
-    private BookService bookService = new BookService(bookRepository, patronRepository, patronLoyaltiesRepository, notificationSender, domainEvents, new MailDetailsFactory());
+    private PlacingOnHold bookService = new PlacingOnHold(bookRepository, patronRepository, domainEvents);
 
     @BeforeEach
     void registerEventListener() {
@@ -69,8 +65,8 @@ class BookServiceEventPublishingTest {
 
     private void bookPlacedOnHoldEventWasPublishedFor(Book book, Patron patron) {
         assertTrue(eventListener.lastConsumedEvent() instanceof BookPlacedOnHold);
-        assertEquals(patron.getPatronId().asInt(), ((BookPlacedOnHold)eventListener.lastConsumedEvent()).getPatronId());
-        assertEquals(book.getBookId().asInt(), ((BookPlacedOnHold)eventListener.lastConsumedEvent()).getBookId());
+        assertEquals(patron.getPatronId().asInt(), ((BookPlacedOnHold) eventListener.lastConsumedEvent()).getPatronId());
+        assertEquals(book.getBookId().asInt(), ((BookPlacedOnHold) eventListener.lastConsumedEvent()).getBookId());
     }
 
     private Book availableBook() {

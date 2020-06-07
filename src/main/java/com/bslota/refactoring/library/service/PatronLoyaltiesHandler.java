@@ -9,6 +9,7 @@ import com.bslota.refactoring.library.model.PatronLoyaltiesRepository;
 import com.bslota.refactoring.library.util.MailDetails;
 import com.bslota.refactoring.library.util.MailDetailsFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author bslota on 07/06/2020
@@ -27,6 +28,7 @@ class PatronLoyaltiesHandler implements DomainEventsListener {
     }
 
     @Override
+    @Transactional
     public void handle(DomainEvent event) {
         if (event instanceof BookPlacedOnHold) {
             handle((BookPlacedOnHold) event);

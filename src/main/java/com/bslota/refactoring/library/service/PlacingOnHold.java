@@ -8,33 +8,23 @@ import com.bslota.refactoring.library.model.BookId;
 import com.bslota.refactoring.library.model.BookRepository;
 import com.bslota.refactoring.library.model.Patron;
 import com.bslota.refactoring.library.model.PatronId;
-import com.bslota.refactoring.library.model.PatronLoyalties;
-import com.bslota.refactoring.library.model.PatronLoyaltiesRepository;
 import com.bslota.refactoring.library.model.PatronRepository;
-import com.bslota.refactoring.library.util.MailDetails;
-import com.bslota.refactoring.library.util.MailDetailsFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 @Service
-public class BookService {
+public class PlacingOnHold {
 
     private final BookRepository bookRepository;
     private final PatronRepository patronRepository;
-    private final PatronLoyaltiesRepository patronLoyaltiesRepository;
-    private final NotificationSender emailService;
-    private final MailDetailsFactory mailDetailsFactory;
     private final DomainEvents domainEvents;
 
-    BookService(BookRepository bookRepository, PatronRepository patronRepository, PatronLoyaltiesRepository patronLoyaltiesRepository, NotificationSender emailService, DomainEvents domainEvents, MailDetailsFactory mailDetailsFactory) {
+    PlacingOnHold(BookRepository bookRepository, PatronRepository patronRepository, DomainEvents domainEvents) {
         this.bookRepository = bookRepository;
         this.patronRepository = patronRepository;
-        this.patronLoyaltiesRepository = patronLoyaltiesRepository;
-        this.emailService = emailService;
         this.domainEvents = domainEvents;
-        this.mailDetailsFactory = mailDetailsFactory;
     }
 
     @Transactional
@@ -56,29 +46,8 @@ public class BookService {
             bookRepository.update(book);
             patronRepository.update(patron);
             domainEvents.publish(result);
-            handle((BookPlacedOnHold) result);
             return true;
         }
         return false;
     }
-
-    private void handle(BookPlacedOnHold event) {
-        PatronLoyalties patronLoyalties = getPatronLoyalties(PatronId.of(event.getPatronId()));
-        patronLoyalties.addLoyaltyPoints();
-        patronLoyaltiesRepository.update(patronLoyalties);
-        if (patronLoyalties.isQualifiesForFreeBook()) {
-            sendNotificationAboutFreeBookRewardFor(patronLoyalties);
-        }
-    }
-
-    private PatronLoyalties getPatronLoyalties(PatronId patronId) {
-        return patronLoyaltiesRepository.findBy(patronId)
-                .orElse(PatronLoyalties.emptyFor(patronId));
-    }
-
-    private void sendNotificationAboutFreeBookRewardFor(PatronLoyalties patronLoyalties) {
-        MailDetails details = mailDetailsFactory.getFreeBookRewardNotificationFor(patronLoyalties);
-        emailService.sendMail(details.recipients(), "contact@your-library.com", details.title(), details.body());
-    }
-
 }

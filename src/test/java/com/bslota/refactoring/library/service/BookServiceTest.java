@@ -6,15 +6,11 @@ import com.bslota.refactoring.library.fixture.PatronFixture;
 import com.bslota.refactoring.library.model.Book;
 import com.bslota.refactoring.library.model.BookRepository;
 import com.bslota.refactoring.library.model.Patron;
-import com.bslota.refactoring.library.model.PatronLoyalties;
-import com.bslota.refactoring.library.model.PatronLoyaltiesRepository;
 import com.bslota.refactoring.library.model.PatronRepository;
-import com.bslota.refactoring.library.util.MailDetailsFactory;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-import static com.bslota.refactoring.library.fixture.PatronLoyaltiesFixture.PatronLoyaltiesBuilder.patronLoyalties;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -35,9 +31,7 @@ class BookServiceTest {
 
     private BookRepository bookRepository = mock(BookRepository.class);
     private PatronRepository patronRepository = mock(PatronRepository.class);
-    private PatronLoyaltiesRepository patronLoyaltiesRepository = mock(PatronLoyaltiesRepository.class);
-    private NotificationSender notificationSender = mock(NotificationSender.class);
-    private BookService bookService = new BookService(bookRepository, patronRepository, patronLoyaltiesRepository, notificationSender, new InMemoryDomainEvents(), new MailDetailsFactory());
+    private PlacingOnHold bookService = new PlacingOnHold(bookRepository, patronRepository, new InMemoryDomainEvents());
 
     @Test
     void shouldFailToPlaceNotExistingBookOnHold() {
@@ -95,8 +89,6 @@ class BookServiceTest {
         //then
         verify(bookRepository, never()).update(any());
         verify(patronRepository, never()).update(any());
-        verify(patronLoyaltiesRepository, never()).update(any());
-        verify(notificationSender, never()).sendMail(any(), any(), any(), any());
     }
 
     @Test
@@ -111,21 +103,6 @@ class BookServiceTest {
         //then
         verify(bookRepository, atLeastOnce()).update(any());
         verify(patronRepository, atLeastOnce()).update(any());
-        verify(patronLoyaltiesRepository, atLeastOnce()).update(any());
-        verify(notificationSender, never()).sendMail(any(), any(), any(), any());
-    }
-
-    @Test
-    void shouldSendNotificationWhenPatronQualifiesForFreeBook() {
-        //given
-        Book book = availableBook();
-        Patron patron = patronQualifyingForFreeBook();
-
-        //when
-        bookService.placeOnHold(book.getBookId().asInt(), patron.getPatronId().asInt(), PERIOD_IN_DAYS);
-
-        //then
-        verify(notificationSender, atLeastOnce()).sendMail(any(), any(), any(), any());
     }
 
     private Book availableBook() {
@@ -151,13 +128,4 @@ class BookServiceTest {
         when(patronRepository.findBy(patron.getPatronId())).thenReturn(Optional.of(patron));
         return patron;
     }
-
-    private Patron patronQualifyingForFreeBook() {
-        Patron patron = PatronFixture.patronQualifyingForFreeBook();
-        PatronLoyalties patronLoyalties = patronLoyalties().withValueQualifyingForFreeBook().build();
-        when(patronRepository.findBy(patron.getPatronId())).thenReturn(Optional.of(patron));
-        when(patronLoyaltiesRepository.findBy(patron.getPatronId())).thenReturn(Optional.of(patronLoyalties));
-        return patron;
-    }
-
 }
