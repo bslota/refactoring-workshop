@@ -1,15 +1,26 @@
 package com.bslota.refactoring.library.service;
 
+import com.bslota.refactoring.library.events.BookPlacedOnHold;
 import com.bslota.refactoring.library.events.FakeEventListener;
 import com.bslota.refactoring.library.events.infrastructure.InMemoryDomainEvents;
+import com.bslota.refactoring.library.fixture.BookFixture;
+import com.bslota.refactoring.library.fixture.PatronFixture;
+import com.bslota.refactoring.library.model.Book;
 import com.bslota.refactoring.library.model.BookRepository;
+import com.bslota.refactoring.library.model.Patron;
 import com.bslota.refactoring.library.model.PatronLoyaltiesRepository;
 import com.bslota.refactoring.library.model.PatronRepository;
 import com.bslota.refactoring.library.util.MailDetailsFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * @author bslota on 04/06/2020
@@ -30,16 +41,48 @@ class BookServiceEventPublishingTest {
 
     @BeforeEach
     void registerEventListener() {
+        eventListener.clear();
         domainEvents.register(eventListener);
     }
 
     @Test
     void shouldNotPublishEventWhenFailedToPlaceNotExistingBookOnHold() {
+        //when
+        bookService.placeOnHold(ID_OF_NOT_EXISTING_BOOK, ID_OF_NOT_EXISTING_PATRON, PERIOD_IN_DAYS);
 
+        //then
+        assertNull(eventListener.lastConsumedEvent());
     }
 
     @Test
     void shouldPublishEventWhenSucceedToPlaceBookOnHold() {
+        //given
+        Book book = availableBook();
+        Patron patron = patronWithoutHolds();
+
+        //when
+        bookService.placeOnHold(book.getBookId().asInt(), patron.getPatronId().asInt(), PERIOD_IN_DAYS);
+
+        //then
+        bookPlacedOnHoldEventWasPublishedFor(book, patron);
+    }
+
+    private void bookPlacedOnHoldEventWasPublishedFor(Book book, Patron patron) {
+        assertTrue(eventListener.lastConsumedEvent() instanceof BookPlacedOnHold);
+        assertEquals(patron.getPatronId().asInt(), ((BookPlacedOnHold)eventListener.lastConsumedEvent()).getPatronId());
+        assertEquals(book.getBookId().asInt(), ((BookPlacedOnHold)eventListener.lastConsumedEvent()).getBookId());
+    }
+
+    private Book availableBook() {
+        Book book = BookFixture.availableBook();
+        when(bookRepository.findBy(book.getBookId())).thenReturn(Optional.of(book));
+        return book;
+    }
+
+    private Patron patronWithoutHolds() {
+        Patron patron = PatronFixture.patronWithoutHolds();
+        when(patronRepository.findBy(patron.getPatronId())).thenReturn(Optional.of(patron));
+        return patron;
     }
 
 }

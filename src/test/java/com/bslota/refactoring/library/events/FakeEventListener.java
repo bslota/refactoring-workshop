@@ -18,4 +18,8 @@ public class FakeEventListener implements DomainEventsListener {
     public DomainEvent lastConsumedEvent() {
         return events.isEmpty() ? null : events.get(events.size() - 1);
     }
+
+    public void clear() {
+        events = new LinkedList<>();
+    }
 }
