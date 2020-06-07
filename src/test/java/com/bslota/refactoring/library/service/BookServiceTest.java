@@ -1,6 +1,5 @@
 package com.bslota.refactoring.library.service;
 
-import com.bslota.refactoring.library.dao.PatronDAO;
 import com.bslota.refactoring.library.fixture.BookFixture;
 import com.bslota.refactoring.library.fixture.PatronFixture;
 import com.bslota.refactoring.library.model.Book;

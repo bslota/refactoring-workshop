@@ -31,10 +31,6 @@ public class PatronLoyalties {
         return this.points;
     }
 
-    public void setPoints(int points) {
-        this.points = points;
-    }
-
     public void setQualifiesForFreeBook(boolean flag) {
         this.qualifiesForFreeBook = flag;
     }
