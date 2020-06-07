@@ -55,7 +55,7 @@ public class BookService {
             book.placedOnHold(patron.getPatronId(), days);
             bookRepository.update(book);
             patronRepository.update(patron);
-
+            domainEvents.publish(result);
             handle((BookPlacedOnHold) result);
             return true;
         }
